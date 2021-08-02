@@ -1,1 +1,1 @@
-web: waitress-serve --port=$PORT RealEstate.wsgi:application
+web: waitress-serve --port=$PORT mA.wsgi:application
