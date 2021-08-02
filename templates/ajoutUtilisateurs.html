@@ -1,0 +1,102 @@
+{% extends 'main.html' %} {% block body %}
+<div class="container ajout" style="height: auto">
+  <form enctype="multipart/form-data" action="{% url 'ajout' %}" method="POST">
+    {% csrf_token %}
+    <div class="banner">
+      <h1>Espace un utilisateur</h1>
+    </div>
+    <!-- first -->
+    <div class="row">
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Nom"
+          name="nom"
+          required
+        />
+      </div>
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Prenom"
+          name="prenom"
+          required
+        />
+      </div>
+    </div>
+    <!--second-->
+    <div class="row">
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Pseudo-nom"
+          name="username"
+          required
+        />
+      </div>
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Email"
+          name="email"
+          required
+        />
+      </div>
+    </div>
+    <!--third-->
+    <div class="row">
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Numero"
+          name="numero"
+          required
+        />
+      </div>
+      <div class="col">
+        <select class="form-select" name="fonction">
+          <option selected>Fonction</option>
+          <option value="A">ADMIN</option>
+          <option value="C">CHEF ATS</option>
+        </select>
+      </div>
+    </div>
+    <!--password-->
+    <div class="row">
+      <div class="col">
+        <input
+          type="password"
+          class="form-control"
+          placeholder="mote de passe"
+          name="password"
+          required
+        />
+      </div>
+      <div class="col">
+        <input
+          type="password"
+          class="form-control"
+          placeholder="confimer mote de passe"
+          name="password2"
+          required
+        />
+      </div>
+    </div>
+    <!--Image-->
+    <div class="row">
+      <div class="form-group" style="text-align: center">
+        {{form.profile_pic}}
+      </div>
+    </div>
+    <!--valide-->
+    <div class="row">
+      <button type="submit" class="btn btn-primary mb-3">Valider</button>
+    </div>
+  </form>
+</div>
+{% endblock %}

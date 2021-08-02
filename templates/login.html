@@ -1,0 +1,47 @@
+{% extends 'main.html' %} {%block title%}Login{%endblock%} {%block body %}
+<div class="container">
+  <div class="row" style="height: 100vh">
+    <div
+      class="d-flex flex-row bd-highlight d-flex justify-content-center mb-3"
+      style="align-items: center"
+    >
+      <div class="p-2 bd-highlight box">
+        <form
+          class="shadow p-3 mb-5 bg-body"
+          method="post"
+          action="{% url 'login' %}"
+        >
+          {% csrf_token %}
+          <div class="logo">
+            <img
+              src="https://estin.dz/wp-content/uploads/2020/11/cropped-estin_logo-mini-2-2.jpg"
+              alt="logo"
+            />
+          </div>
+
+          <div class="mb-3">
+            <input
+              type="text"
+              class="form-control"
+              name="username"
+              placeholder="Username"
+            />
+          </div>
+          <div class="mb-3">
+            <input
+              type="password"
+              class="form-control"
+              placeholder="Mot de passe"
+              name="password"
+            />
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <div class="oublie">
+            <small><a href="#">Mot de passe oublié ?</a></small>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock%}

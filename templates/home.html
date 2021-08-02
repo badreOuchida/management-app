@@ -1,0 +1,28 @@
+{% extends 'main.html' %} {%block title%}Home{%endblock%} {%block body %}
+<div class="container home">
+  <div class="row">
+    <div class="col-6">
+      <a href="{% url 'users' %}">
+        <div>
+          <img
+            src="https://icon-library.com/images/user-group-icon/user-group-icon-4.jpg"
+            alt="users"
+          />
+          <h1>Espace utilisateurs</h1>
+        </div>
+      </a>
+    </div>
+    <div class="col-6">
+      <a href="{% url 'ats' %}">
+        <div>
+          <img
+            src="https://mhmi.net/wp-content/uploads/2020/07/invoice-flat-icon-payment-bill-600w-741679549.jpg"
+            alt="users"
+          />
+          <h1>Espace ATS</h1>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock%}

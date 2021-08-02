@@ -1,0 +1,53 @@
+{% extends 'main.html' %} {%block title%}Utilisateurs{%endblock%} {%block body%}
+<div class="container home" style="height: auto">
+  <div class="row" style="margin-left: 3px">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">NOM</th>
+          <th scope="col">PRENOM</th>
+          <th scope="col">FONCTION</th>
+          <th scope="col">NUMERO</th>
+          <th scope="col">SUPPRIMER</th>
+          <th scope="col">MODIFIER</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user in users %}
+        <tr>
+          <td>{{user.id}}</td>
+          <td>{{user.nom}}</td>
+          <td>{{user.prenom}}</td>
+          <td>{{user.get_fonction_display}}</td>
+          <td>{{user.numero}}</td>
+          <td>
+            <a href="{% url 'supprimer' user.id %}"
+              ><i class="fa fa-trash" aria-hidden="true" style="color: red"></i
+            ></a>
+          </td>
+          <td>
+            <a href="{% url 'edite' user.id %}">
+              <i class="fas fa-edit" style="color: green"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td colspan="7" class="table-active add">
+            <a href="{% url 'ajout' %}">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock%} {% block script %}
+<script>
+  document.querySelector(".add").onclick = () => {
+    window.location.href = "{% url 'ajout' %}";
+  };
+</script>
+{% endblock script %}

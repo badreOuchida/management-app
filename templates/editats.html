@@ -1,0 +1,159 @@
+{% extends 'main.html' %} {% block body %}
+<div class="container ajout" style="height: auto">
+  <form
+    enctype="multipart/form-data"
+    action="{% url 'editats' employee.id %}"
+    method="POST"
+  >
+    {% csrf_token %}
+    <div class="banner">
+      <h1>Espace un ATS</h1>
+    </div>
+    <!-- first -->
+    <div class="row">
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Nom"
+          name="nom"
+          value="{{employee.nom}}"
+          required
+        />
+      </div>
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Prenom"
+          name="prenom"
+          value="{{employee.prenom}}"
+          required
+        />
+      </div>
+    </div>
+    <!--second-->
+    <div class="row">
+      <div class="col">
+        <input
+          type="email"
+          class="form-control"
+          placeholder="Email"
+          name="email"
+          value="{{employee.email}}"
+          required
+        />
+      </div>
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Telephone"
+          name="numero"
+          value="{{employee.numero}}"
+          required
+        />
+      </div>
+    </div>
+    <!--third-->
+    <div class="row">
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Adresse"
+          name="adresse"
+          value="{{employee.adresse}}"
+          required
+        />
+      </div>
+      <div class="col">
+        <select
+          class="form-select"
+          name="situation"
+        >
+          <option value="C" {% if employee.situation == 'C' %}selected{% endif %}>Célibataire</option>
+          <option value="M" {% if employee.situation == 'M' %}selected{% endif %}>Marié</option>
+          <option value="D" {% if employee.situation == 'D' %}selected{% endif %}>Divorcé</option>
+        </select>
+      </div>
+    </div>
+    <!--password-->
+    <div class="row">
+      <div class="col">
+        <select
+          class="form-select"
+          name="function"
+        >
+          <option value="R" {% if employee.function == 'R' %}selected{% endif %}>rien</option>
+          <option value="D" {% if employee.function == 'D' %}selected{% endif %}>Directeur</option>
+          <option value="DA" {% if employee.function == 'DA' %}selected{% endif %}>Directeur adjoint</option>
+          <option value="SD" {% if employee.function == 'SD' %}selected{% endif %}>Sous-directeur</option>
+          <option value="SDF" {% if employee.function == 'SDF' %}selected{% endif %}>Sous-directeur de finances</option>
+        </select>
+      </div>
+      <div class="col">
+        <select class="form-select" name="nature">
+          <option value="S" {% if employee.nature == 'S' %}selected{% endif %}>Stagiaire</option>
+          <option value="F" {% if employee.nature == 'F' %}selected{% endif %}>Fonctionnaire</option>
+        </select>
+      </div>
+    </div>
+    <!-- numcss ccp -->
+    <div class="row">
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Code de CCP"
+          name="numccp"
+          value="{{employee.numccp}}"
+          required
+        />
+      </div>
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Numéro de sécurité sociale"
+          name="numss"
+          value="{{employee.numss}}"
+          required
+        />
+      </div>
+    </div>
+    <!--Image-->
+    <div class="row">
+      <div class="col">
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Nombre d'enfant"
+          name="Nenfant"
+          value="{{employee.Nenfant}}"
+          required
+        />
+      </div>
+      <div class="col">
+        <input
+          type="date"
+          class="form-control"
+          placeholder="Date de naissance"
+          name="naissance"
+          value="{{employee.naissance|date:"Y-m-d"}}"
+          required
+        />
+      </div>
+    </div>
+    <!--Image-->
+    <div class="row">
+      <div class="form-group" style="text-align: center">{{form.image}}</div>
+    </div>
+    <!--valide-->
+    <div class="row">
+      <button type="submit" class="btn btn-primary mb-3">Valider</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+

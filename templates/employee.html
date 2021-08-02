@@ -1,0 +1,64 @@
+{% extends 'main.html' %} {%block title%}Espace ATS{%endblock%} {%block body%}
+<div class="container home" style="height: auto">
+  <div class="row" style="margin-left: 3px">
+    <form action="{% url 'ats' %}" method="get">
+      <div class="input-group search">
+        <div class="form-outline">
+          <input type="search" name="search" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </form>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">NOM</th>
+          <th scope="col">PRENOM</th>
+          <th scope="col">FONCTION</th>
+          <th scope="col">Date de rejoint</th>
+          <th scope="col">SUPPRIMER</th>
+          <th scope="col">MODIFIER</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for employee in employees %}
+        <tr>
+          <td>{{employee.id}}</td>
+          <td>{{employee.nom}}</td>
+          <td>{{employee.prenom}}</td>
+          <td>{{employee.get_function_display}}</td>
+          <td>{{employee.date_joined|date:"d/m/Y"}}</td>
+          <td>
+            <a href="{% url 'supprimerats' employee.id %}"
+              ><i class="fa fa-trash" aria-hidden="true" style="color: red"></i
+            ></a>
+          </td>
+          <td>
+            <a href="{% url 'editats' employee.id %}">
+              <i class="fas fa-edit" style="color: green"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td colspan="7" class="table-active add">
+            <a href="{% url 'ajoutats' %}">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock%} {% block script %}
+<script>
+  document.querySelector(".add").onclick = () => {
+    window.location.href = "{% url 'ajoutats' %}";
+  };
+</script>
+{% endblock script %}

@@ -1,0 +1,183 @@
+.box form {
+  width: 400px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.box input {
+  height: 50px;
+}
+
+.box button {
+  width: 100%;
+  height: 45px;
+}
+
+.oublie {
+  margin: 2px 0;
+  padding-top: 7px;
+  text-align: center;
+}
+
+.oublie a:hover {
+  text-decoration: underline;
+  transition: 1s;
+}
+.creer {
+  display: flex;
+  justify-content: center;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+/* navbar */
+.navbar,
+footer {
+  background-color: #2f3541;
+}
+.navbar .left {
+  margin-left: auto;
+  margin-right: 2rem;
+}
+.navbar-brand img {
+  width: 100px;
+  margin-left: 1.5rem;
+}
+
+/* container home */
+
+@keyframes animation {
+  from {
+    background-color: #f0f2f5;
+  }
+  to {
+    background-color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+}
+
+@keyframes animation2 {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.home {
+  height: 70vh;
+  display: flex;
+  animation-name: animation;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  margin-top: 3.5rem;
+  margin-bottom: 3.5rem;
+  border-radius: 10px;
+}
+
+.home .row {
+  width: 100%;
+}
+
+.home .col-6 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home .col-6 div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  animation-name: animation2;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+}
+
+.home .col-6 a {
+  color: #000;
+}
+
+.home .col-6 div img {
+  width: 256px;
+  height: 256px;
+}
+
+.home .col-6 div :hover {
+  transform: scale(1.1);
+  transition: 0.5s;
+}
+
+th,
+td {
+  text-align: center;
+}
+
+/* froms */
+
+.ajout {
+  display: flex;
+  animation-name: animation;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  margin-top: 3.5rem;
+  margin-bottom: 3.5rem;
+  border-radius: 10px;
+  padding: 0;
+}
+
+.ajout form {
+  width: 100%;
+}
+.banner {
+  position: relative;
+  height: 210px;
+  background-image: url("../images/ajoutATS.jpg");
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #fff;
+  border-radius: 10px;
+}
+.banner::after {
+  content: "";
+  background-color: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.banner h1 {
+  z-index: 2;
+}
+
+.ajout .row {
+  margin: 10px;
+}
+
+.add {
+  cursor: pointer;
+}
+
+.home .search {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+}

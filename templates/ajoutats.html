@@ -1,0 +1,146 @@
+{% extends 'main.html' %} {% block body %}
+<div class="container ajout" style="height: auto">
+  <form
+    enctype="multipart/form-data"
+    action="{% url 'ajoutats' %}"
+    method="POST"
+  >
+    {% csrf_token %}
+    <div class="banner">
+      <h1>Espace un ATS</h1>
+    </div>
+    <!-- first -->
+    <div class="row">
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Nom"
+          name="nom"
+          required
+        />
+      </div>
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Prenom"
+          name="prenom"
+          required
+        />
+      </div>
+    </div>
+    <!--second-->
+    <div class="row">
+      <div class="col">
+        <input
+          type="email"
+          class="form-control"
+          placeholder="Email"
+          name="email"
+          required
+        />
+      </div>
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Telephone"
+          name="numero"
+          required
+        />
+      </div>
+    </div>
+    <!--third-->
+    <div class="row">
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Adresse"
+          name="adresse"
+          required
+        />
+      </div>
+      <div class="col">
+        <select class="form-select" name="situation">
+          <option selected>Situation</option>
+          <option value="C">Célibataire</option>
+          <option value="M">Marié</option>
+          <option value="D">Divorcé</option>
+        </select>
+      </div>
+    </div>
+    <!--password-->
+    <div class="row">
+      <div class="col">
+        <select class="form-select" name="function">
+          <option selected>Fonction</option>
+          <option value="R">rien</option>
+          <option value="D">Directeur</option>
+          <option value="DA">Directeur adjoint</option>
+          <option value="SD">Sous-directeur</option>
+          <option value="SDF">Sous-directeur de finances</option>
+        </select>
+      </div>
+      <div class="col">
+        <select class="form-select" name="nature">
+          <option selected>Nature</option>
+          <option value="S">Stagiaire</option>
+          <option value="F">Fonctionnaire</option>
+        </select>
+      </div>
+    </div>
+    <!-- numcss ccp -->
+    <div class="row">
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Code de CCP"
+          name="numccp"
+          required
+        />
+      </div>
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Numéro de sécurité sociale"
+          name="numss"
+          required
+        />
+      </div>
+    </div>
+    <!--Image-->
+    <div class="row">
+      <div class="col">
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Nombre d'enfant"
+          name="Nenfant"
+          required
+        />
+      </div>
+      <div class="col">
+        <input
+          type="date"
+          class="form-control"
+          placeholder="Date de naissance"
+          name="naissance"
+          required
+        />
+      </div>
+    </div>
+    <!--Image-->
+    <div class="row">
+      <div class="form-group" style="text-align: center">{{form.image}}</div>
+    </div>
+    <!--valide-->
+    <div class="row">
+      <button type="submit" class="btn btn-primary mb-3">Valider</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
