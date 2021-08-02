@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-_32zvt$^#b7-bk%y%2t&wmj@#97ka+)@f&emwoh+f7+d^i@ygi
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['managementecole.herokuapp.com']
+ALLOWED_HOSTS = ['managementecole.herokuapp.com','127.0.0.1']
 
 AUTH_USER_MODEL = 'myapp.Utilisateur'
 
@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 ROOT_URLCONF = 'mA.urls'
@@ -81,8 +82,12 @@ WSGI_APPLICATION = 'mA.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd9ml9hbj6d7slh',
+        'HOST': "ec2-54-147-93-73.compute-1.amazonaws.com",
+        'PORT':5432,
+        'USER':'enjyrmjkfunoqb',
+        'PASSWORD':'0236a80d719cb7639c1be5d651396d1b1c834e0673d5d501f0306bc95b136065'
     }
 }
 
