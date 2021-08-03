@@ -173,6 +173,7 @@ def ajoutatsView(request):
             adresse = request.POST['adresse'],
             email = request.POST['email'],
             situation = request.POST['situation'],
+            date_joined = request.POST['date_joined'],
             date_recretment = request.POST['date_recretment'],
             Nenfant= request.POST['Nenfant'],
             nature = request.POST['nature'],
@@ -222,6 +223,7 @@ def editeatsView(request,pk):
         employee.numccp = request.POST['numccp']
         employee.numss = request.POST['numss']
         employee.date_recretment = request.POST['date_recretment']
+        employee.date_joined = request.POST['date_joined']
         employee.save()
         form = ATSFomrs(request.POST,request.FILES,instance=employee)
         if form.is_valid():
