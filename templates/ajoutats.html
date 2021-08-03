@@ -30,6 +30,38 @@
         />
       </div>
     </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="row" style="margin: 0">
+          <div
+            class="col-4"
+            style="display: flex; justify-content: center; align-items: center"
+          >
+            <small>Date de naissance : </small>
+          </div>
+          <div class="col-8" style="padding: 0">
+            <input
+              type="date"
+              class="form-control"
+              placeholder="Date de naissance"
+              name="naissance"
+              required
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Adresse"
+          name="adresse"
+          required
+        />
+      </div>
+    </div>
     <!--second-->
     <div class="row">
       <div class="col">
@@ -54,21 +86,21 @@
     <!--third-->
     <div class="row">
       <div class="col">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Adresse"
-          name="adresse"
-          required
-        />
-      </div>
-      <div class="col">
         <select class="form-select" name="situation">
           <option selected>Situation</option>
           <option value="C">Célibataire</option>
           <option value="M">Marié</option>
           <option value="D">Divorcé</option>
         </select>
+      </div>
+      <div class="col">
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Nombre d'enfant"
+          name="Nenfant"
+          required
+        />
       </div>
     </div>
     <!--password-->
@@ -115,28 +147,49 @@
     <!--Image-->
     <div class="row">
       <div class="col">
-        <input
-          type="number"
-          class="form-control"
-          placeholder="Nombre d'enfant"
-          name="Nenfant"
-          required
-        />
+        <div class="row" style="margin: 0">
+          <div
+            class="col-4"
+            style="display: flex; justify-content: center; align-items: center"
+          >
+            <small>Date de recretement : </small>
+          </div>
+          <div class="col-8" style="padding: 0">
+            <input
+              type="date"
+              class="form-control"
+              name="date_recretment"
+              required
+            />
+          </div>
+        </div>
       </div>
       <div class="col">
-        <input
-          type="date"
-          class="form-control"
-          placeholder="Date de naissance"
-          name="naissance"
-          required
-        />
+        <div class="row" style="margin: 0">
+          <div
+            class="col-4"
+            style="display: flex; justify-content: center; align-items: center"
+          >
+            <small>Date d'installation : </small>
+          </div>
+          <div class="col-8" style="padding: 0">
+            <input
+              type="date"
+              class="form-control"
+              name="date_joined"
+              required
+            />
+          </div>
+        </div>
       </div>
     </div>
-    <!--Image-->
+
     <div class="row">
-      <div class="form-group" style="text-align: center">{{form.image}}</div>
+      <div class="col">
+        <div class="form-group" style="text-align: center">{{form.image}}</div>
+      </div>
     </div>
+
     <!--valide-->
     <div class="row">
       <button type="submit" class="btn btn-primary mb-3">Valider</button>

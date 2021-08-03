@@ -108,7 +108,8 @@ class Employee(models.Model):
     email = models.EmailField(max_length=200,null=True)
     situation = models.CharField(choices=SITUATION_FAMILIALE , max_length=1,null=True)
     # date recrutememtn
-    date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
+    date_joined = models.DateField()
+    date_recretment  = models.DateField()
     Nenfant=models.IntegerField()
     nature=models.CharField(choices=NATURE , max_length=1,null=True)
     numccp=models.IntegerField()

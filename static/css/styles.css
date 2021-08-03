@@ -181,3 +181,33 @@ td {
   justify-content: center;
   margin: 1.5rem 0;
 }
+
+.ps .hh {
+  width: auto;
+  cursor: pointer;
+}
+
+.ps .hh:hover {
+  color: #4343c9;
+  transition: 0.5s;
+}
+
+.ps {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  color: #0000ff;
+}
+
+.b button {
+  width: auto;
+}
+
+.hide {
+  display: none;
+}
+
+.b {
+  display: flex;
+  justify-content: center;
+}

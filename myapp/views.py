@@ -66,6 +66,7 @@ def EditeUser(request,pk):
 
             user.nom = request.POST['nom']
             user.prenom = request.POST['prenom']
+            user.username= request.POST['username']
             user.numero = request.POST['numero']
             if request.POST['fonction'] == 'A':
                 user.fonction = "A"
@@ -80,7 +81,9 @@ def EditeUser(request,pk):
             else : 
                 messages.add_message(request, messages.WARNING, 'Operation indesirable, veuillez choisir une fonction')
                 return redirect('/utilisateurs')
-            
+                if request.POST['password'] != " " :
+                    print('pas')
+                    user.set_password(request.POST['password'])
             form = UtilisateurForms(request.POST,request.FILES,instance=user)
             if form.is_valid():
                 form.save()
@@ -170,6 +173,7 @@ def ajoutatsView(request):
             adresse = request.POST['adresse'],
             email = request.POST['email'],
             situation = request.POST['situation'],
+            date_recretment = request.POST['date_recretment'],
             Nenfant= request.POST['Nenfant'],
             nature = request.POST['nature'],
             numccp = request.POST['numccp'],
@@ -217,6 +221,7 @@ def editeatsView(request,pk):
         employee.nature = request.POST['nature']
         employee.numccp = request.POST['numccp']
         employee.numss = request.POST['numss']
+        employee.date_recretment = request.POST['date_recretment']
         employee.save()
         form = ATSFomrs(request.POST,request.FILES,instance=employee)
         if form.is_valid():

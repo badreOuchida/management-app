@@ -32,6 +32,38 @@
         />
       </div>
     </div>
+    <div class="row">
+      <div class="col">
+        <div class="row" style="margin: 0">
+          <div
+            class="col-4"
+            style="display: flex; justify-content: center; align-items: center"
+          >
+            <small>Date de naissance : </small>
+          </div>
+          <div class="col-8" style="padding: 0">
+            <input
+              type="date"
+              class="form-control"
+              name="naissance"
+              value="{{employee.naissance|date:"Y-m-d"}}"
+              required
+            />
+          </div>
+        </div>
+      </div>
+    
+      <div class="col">
+        <input
+          type="number"
+          class="form-control"
+          placeholder="Nombre d'enfant"
+          name="Nenfant"
+          value="{{employee.Nenfant}}"
+          required
+        />
+      </div>
+    </div>
     <!--second-->
     <div class="row">
       <div class="col">
@@ -125,30 +157,52 @@
     <!--Image-->
     <div class="row">
       <div class="col">
-        <input
-          type="number"
-          class="form-control"
-          placeholder="Nombre d'enfant"
-          name="Nenfant"
-          value="{{employee.Nenfant}}"
-          required
-        />
+        <div class="row" style="margin: 0">
+          <div
+            class="col-4"
+            style="display: flex; justify-content: center; align-items: center"
+          >
+            <small>Date de recretement : </small>
+          </div>
+          <div class="col-8" style="padding: 0">
+            <input
+              type="date"
+              class="form-control"
+              name="date_recretment"
+              value="{{employee.date_recretment|date:"Y-m-d"}}"
+              required
+            />
+          </div>
+        </div>
       </div>
+
       <div class="col">
-        <input
-          type="date"
-          class="form-control"
-          placeholder="Date de naissance"
-          name="naissance"
-          value="{{employee.naissance|date:"Y-m-d"}}"
-          required
-        />
+        <div class="row" style="margin: 0">
+          <div
+            class="col-4"
+            style="display: flex; justify-content: center; align-items: center"
+          >
+            <small>Date d'installation : </small>
+          </div>
+          <div class="col-8" style="padding: 0">
+            <input
+              type="date"
+              class="form-control"
+              name="date_joined"
+              value="{{employee.date_joined|date:"Y-m-d"}}"
+              required
+            />
+          </div>
+        </div>
       </div>
     </div>
-    <!--Image-->
+
     <div class="row">
-      <div class="form-group" style="text-align: center">{{form.image}}</div>
+      <div class="col">
+        <div class="form-group" style="text-align: center">{{form.image}}</div>
+      </div>
     </div>
+
     <!--valide-->
     <div class="row">
       <button type="submit" class="btn btn-primary mb-3">Valider</button>
