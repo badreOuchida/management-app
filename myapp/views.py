@@ -234,3 +234,5 @@ def editeatsView(request,pk):
     context = {'employee':employee,'form':form}
     return render(request, 'editats.html', context)
 
+def AjoutPaie(request):
+    return render(request,'paie.html')

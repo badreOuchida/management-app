@@ -211,3 +211,66 @@ td {
   display: flex;
   justify-content: center;
 }
+
+.container-fluid {
+  display: flex;
+  padding: 0;
+}
+
+.rightbar {
+  background-color: #2f3541;
+  transition: 1s;
+  width: 0;
+  display: none;
+}
+
+.tr {
+  cursor: pointer;
+}
+
+.user {
+  width: 100px;
+  border-radius: 50%;
+}
+.h {
+  padding-left: 15px;
+}
+
+.d-flex h5 {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.d-flex h4 {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.A,
+.I,
+.CA,
+.CI,
+.C,
+.SB,
+.LCAI,
+.IN,
+.LGAI,
+.CCA,
+.CCAL,
+.INL,
+.SBL,
+.IISAC,
+.IISTC {
+  display: none;
+}
+
+.CA,
+.CI,
+.CCA,
+.IN,
+.SB,
+.BI,
+.GR,
+.IM,
+.NE,
+.GIT {
+  pointer-events: none;
+}

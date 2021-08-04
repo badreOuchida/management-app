@@ -27,25 +27,31 @@
     <!--Nav-->
     {% if request.user.is_authenticated %} {% include 'navbar.html' %} {%endif%}
     <!--messages-->
-    {% for message in messages %}
-    <div
-      class="alert alert-{{message.tags}} alert-dismissible fade show"
-      role="alert"
-      style="margin-top: 1rem"
-    >
-      <strong>Hi {{request.user}}!</strong>
-      {{message}}
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="alert"
-        aria-label="Close"
-      ></button>
-    </div>
-    {% endfor %}
+    <div class="container-fluid">
+      <div class="rightbar" style="height: 100%">
+        {% if request.user.is_authenticated %} {% include 'verticale.html' %}
+        {%endif%}
+      </div>
+      {% for message in messages %}
+      <div
+        class="alert alert-{{message.tags}} alert-dismissible fade show"
+        role="alert"
+        style="margin-top: 1rem"
+      >
+        <strong>Hi {{request.user}}!</strong>
+        {{message}}
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="alert"
+          aria-label="Close"
+        ></button>
+      </div>
+      {% endfor %}
 
-    <!--Body-->
-    {%block body%} {% endblock %}
+      <!--Body-->
+      {%block body%} {% endblock %}
+    </div>
 
     <!--footer-->
     {% if request.user.is_authenticated %} {%include 'footer.html' %} {%endif%}
@@ -55,5 +61,19 @@
       crossorigin="anonymous"
     ></script>
     {% block script %} {% endblock script %}
+    <script>
+      var body = document.body,
+        html = document.documentElement;
+
+      var height = Math.max(
+        body.scrollHeight,
+        body.offsetHeight,
+        html.clientHeight,
+        html.scrollHeight,
+        html.offsetHeight
+      );
+      console.log(height);
+      document.querySelector(".rightbar").style.height = height;
+    </script>
   </body>
 </html>

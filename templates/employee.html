@@ -1,5 +1,5 @@
 {% extends 'main.html' %} {%block title%}Espace ATS{%endblock%} {%block body%}
-<div class="container home" style="height: auto">
+<div class="container home" style="height: 100%">
   <div class="row" style="margin-left: 3px">
     <form action="{% url 'ats' %}" method="get">
       <div class="input-group search">
@@ -26,7 +26,14 @@
       </thead>
       <tbody>
         {% for employee in employees %}
-        <tr>
+        <tr
+          class="tr"
+          data-nom="{{employee.nom}}"
+          data-prenom="{{employee.prenom}}"
+          data-id="{{employee.id}}"
+          data-image="{{employee.image.url}}"
+          data-numero="{{employee.numero}}"
+        >
           <td>{{employee.id}}</td>
           <td>{{employee.nom}}</td>
           <td>{{employee.prenom}}</td>
@@ -60,5 +67,20 @@
   document.querySelector(".add").onclick = () => {
     window.location.href = "{% url 'ajoutats' %}";
   };
+
+  document.querySelectorAll(".tr").forEach((row) => {
+    row.onclick = () => {
+      document.querySelector(".rightbar").style.display = "flex";
+      document.querySelector(".rightbar").style.width = "300px";
+      document.querySelector(".rightbar").style.opacity = "1";
+      document.querySelector(".home").style.width = "70%";
+      document.querySelector(".user").src = row.dataset.image;
+      /* name */
+      document.querySelector(".nom").innerHTML =
+        row.dataset.nom + " " + row.dataset.prenom;
+      /* numero*/
+      document.querySelector(".numero").innerHTML = row.dataset.numero;
+    };
+  });
 </script>
 {% endblock script %}

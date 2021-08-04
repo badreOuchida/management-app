@@ -1,0 +1,642 @@
+{% extends 'main.html' %} {% block body %}
+<div class="container ajout" style="height: auto">
+  <form enctype="multipart/form-data" action="{% url 'ajout' %}" method="POST">
+    {% csrf_token %}
+    <div class="banner">
+      <h1>Gestion de paie</h1>
+    </div>
+    <div class="row"><h4>Champs salaire de base</h4></div>
+    <!-- first -->
+    <div class="row">
+      <div class="col">
+        <select class="form-select F" name="filiere">
+          <option selected>Filiere</option>
+          <option value="A">Administration generale</option>
+          <option value="I">Informatique</option>
+        </select>
+      </div>
+    </div>
+    <!--second-->
+    <div class="row">
+      <div class="col">
+        <!--select grade admi-->
+        <label class="form-label LGAI">Corps : </label>
+        <select class="form-select A" name="grade" data-filiere="A">
+          <option data-corps="1" selected>Grade</option>
+          <!--administrateurs-->
+          <option
+            value="GA"
+            data-corps="1"
+            data-categorie="12"
+            data-indice="537"
+          >
+            Adinistrateur
+          </option>
+          <option
+            value="GAP"
+            data-corps="1"
+            data-categorie="14"
+            data-indice="621"
+          >
+            Administrateur principal
+          </option>
+          <option
+            value="GAC"
+            data-corps="1"
+            data-categorie="16"
+            data-indice="713"
+          >
+            Administrateur conseiller
+          </option>
+          <!--attaches d'administrations-->
+          <option
+            value="GAA"
+            data-corps="2"
+            data-categorie="9"
+            data-indice="418"
+          >
+            Attaché d'administration
+          </option>
+          <option
+            value="GAC"
+            data-corps="2"
+            data-categorie="10"
+            data-indice="453"
+          >
+            Attaché principale d'administration
+          </option>
+          <!--Agents d'administrations-->
+          <option
+            value="AB"
+            data-corps="3"
+            data-categorie="5"
+            data-indice="288"
+          >
+            Agents de bureau
+          </option>
+          <option
+            value="AA"
+            data-corps="3"
+            data-categorie="7"
+            data-indice="348"
+          >
+            Agent d'administration
+          </option>
+          <option
+            value="APA"
+            data-corps="3"
+            data-categorie="8"
+            data-indice="379"
+          >
+            Agent principale d'administration
+          </option>
+          <!--secretaires-->
+          <option
+            value="AS"
+            data-corps="4"
+            data-categorie="5"
+            data-indice="288"
+          >
+            Agents de saisie
+          </option>
+          <option value="S" data-corps="4" data-categorie="6" data-indice="315">
+            Secretaire
+          </option>
+          <option
+            value="SD"
+            data-corps="4"
+            data-categorie="8"
+            data-indice="379"
+          >
+            Secretaire de direction
+          </option>
+          <option
+            value="SPD"
+            data-corps="4"
+            data-categorie="10"
+            data-indice="453"
+          >
+            Secretaire principale de direction
+          </option>
+          <!--comptable administrative-->
+          <option
+            value="ACA"
+            data-corps="5"
+            data-categorie="5"
+            data-indice="288"
+          >
+            Aide comptable administrative
+          </option>
+          <option
+            value="CA"
+            data-corps="5"
+            data-categorie="8"
+            data-indice="379"
+          >
+            Comptable administrative
+          </option>
+          <option
+            value="CAP"
+            data-corps="5"
+            data-categorie="10"
+            data-indice="453"
+          >
+            Comptable administrative principale
+          </option>
+        </select>
+        <!--fin select grade admi-->
+
+        <!--select info-->
+        <select class="form-select I" name="grades" data-filiere="I">
+          <option data-corps="0" selected>Grades</option>
+          <!--Ingenieurs-->
+          <option
+            value="IA"
+            data-corps="1"
+            data-categorie="11"
+            data-indice="498"
+          >
+            Ingenieur d'application
+          </option>
+          <option
+            value="IE"
+            data-corps="1"
+            data-categorie="13"
+            data-indice="578"
+          >
+            Ingenieur d'etat
+          </option>
+          <option
+            value="IP"
+            data-corps="1"
+            data-categorie="14"
+            data-indice="621"
+          >
+            Ingenieur principal
+          </option>
+          <option
+            value="IC"
+            data-corps="1"
+            data-categorie="16"
+            data-indice="713"
+          >
+            Ingenieur en chef
+          </option>
+          <!--Techniciens-->
+          <option value="T" data-corps="2" data-categorie="8" data-indice="379">
+            Technicien
+          </option>
+          <option
+            value="TS"
+            data-corps="2"
+            data-categorie="10"
+            data-indice="453"
+          >
+            Technicien superieur
+          </option>
+          <!--Adjoint technique-->
+          <option
+            value="AT"
+            data-corps="3"
+            data-categorie="7"
+            data-indice="348"
+          >
+            Adjoint technique
+          </option>
+          <!--Agent technique-->
+          <option
+            value="AST"
+            data-corps="4"
+            data-categorie="5"
+            data-indice="288"
+          >
+            Agent technique
+          </option>
+        </select>
+        <!--fin select info-->
+      </div>
+      <div class="col">
+        <label class="form-label LCAI">Corps : </label>
+        <!--select corps-->
+        <select class="form-select CA" name="corps">
+          <option>COPRS</option>
+          <option value="A">Administrateurs</option>
+          <option value="AD">Attachés d'dministrations</option>
+          <option value="AA">Agents d'dministrations</option>
+          <option value="S">Secretaire</option>
+          <option value="CA">Comptables administratifs</option>
+        </select>
+        <!--fin select corps-->
+
+        <!--select corps info -->
+        <select class="form-select CI" name="corps">
+          <option selected>COPRS</option>
+          <option value="I">Ingenieurs</option>
+          <option value="T">Techniciens</option>
+          <option value="AT">Adjoint techniques</option>
+          <option value="AST">Agents techniques</option>
+        </select>
+        <!--fin select corps info -->
+      </div>
+    </div>
+    <!--third-->
+    <div class="row">
+      <div class="col">
+        <label class="form-label CCAL">Categorie : </label>
+        <input
+          type="number"
+          class="form-control CCA"
+          name="categorie"
+          value="0"
+          required
+        />
+      </div>
+      <div class="col">
+        <label class="form-label INL">Indice :</label>
+        <input
+          type="number"
+          class="form-control IN"
+          placeholder="indice"
+          name="indice"
+          value="0"
+          required
+        />
+      </div>
+    </div>
+    <!--salaire-->
+    <div class="row">
+      <div class="col">
+        <label class="form-label SBL">Salaire de base : </label>
+        <input
+          type="number"
+          class="form-control SB"
+          value="0"
+          name="salaire"
+          required
+        />
+      </div>
+    </div>
+    <!--valide-->
+    <div class="row">
+      <hr />
+    </div>
+    <!--champs salaire brut imposable-->
+    <div class="row">
+      <h4>Champs salaire brut imposable</h4>
+    </div>
+    <!--Poste occupé-->
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Poste occupé :</label>
+        <select class="form-select PO" name="poste_occupé">
+          <option value="R" data-indiciaire="0">Rien</option>
+          <option value="D" data-indiciaire="1008">Directeur</option>
+          <option value="DA" data-indiciaire="605">Directeur adjoint</option>
+          <option value="CD" data-indiciaire="605">Chef de departement</option>
+          <option value="SG" data-indiciaire="605">Secretaire generale</option>
+          <option value="DB" data-indiciaire="363">
+            Directeur de la bibliotheque
+          </option>
+          <option value="SDPF" data-indiciaire="363">
+            Sous directeur des personnels et de la formation
+          </option>
+          <option value="SDFM" data-indiciaire="363">
+            Sous directeur des finances et de moyens
+          </option>
+          <option value="RCIA" data-indiciaire="363">
+            Responsable de centre d'impression et d'audiovisuel
+          </option>
+          <option value="RCSI" data-indiciaire="363">
+            Responsable de centre de systemes et reseaux d'informations
+          </option>
+          <option value="RHT" data-indiciaire="363">
+            Responsable de hall de technologies
+          </option>
+          <option value="RFP" data-indiciaire="363">
+            Responsable de la forme de production
+          </option>
+        </select>
+      </div>
+      <div class="col">
+        <label class="form-label">Bonification indiciaire :</label>
+        <input
+          type="number"
+          class="form-control BI"
+          placeholder="Bonification indiciaire"
+          name="indiciaire"
+          value="0"
+          required
+        />
+      </div>
+    </div>
+    <!--Categorie-->
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Catégorie de la promotion :</label>
+        <select class="form-select CP" name="categorie_promo">
+          <option value="0" data-groupe="Rien" data-indicem="0">0</option>
+          <option value="1" data-groupe="D" data-indicem="200">1</option>
+          <option value="2" data-groupe="D" data-indicem="219">2</option>
+          <option value="3" data-groupe="D" data-indicem="240">3</option>
+          <option value="4" data-groupe="D" data-indicem="263">4</option>
+          <option value="5" data-groupe="D" data-indicem="288">5</option>
+          <option value="6" data-groupe="D" data-indicem="315">6</option>
+          <option value="7" data-groupe="C" data-indicem="348">7</option>
+          <option value="8" data-groupe="C" data-indicem="379">8</option>
+          <option value="9" data-groupe="B" data-indicem="418">9</option>
+          <option value="10" data-groupe="B" data-indicem="453">10</option>
+          <option value="11" data-groupe="A" data-indicem="498">11</option>
+          <option value="12" data-groupe="A" data-indicem="537">12</option>
+          <option value="13" data-groupe="A" data-indicem="578">13</option>
+          <option value="14" data-groupe="A" data-indicem="621">14</option>
+          <option value="15" data-groupe="A" data-indicem="66">15</option>
+          <option value="16" data-groupe="A" data-indicem="713">16</option>
+        </select>
+      </div>
+      <div class="col">
+        <label class="form-label">Groupe :</label>
+        <input
+          type="text"
+          class="form-control GR"
+          placeholder="Groupe"
+          name="indiciaire"
+          required
+        />
+      </div>
+    </div>
+
+    <!---->
+
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Indice minimal :</label>
+        <input
+          type="number"
+          class="form-control IM"
+          placeholder="Indice minimal"
+          name="indice_minimale"
+          value="0"
+          required
+        />
+      </div>
+
+      <div class="col">
+        <label class="form-label">Indice d'échellon :</label>
+        <select class="form-select IE" name="indice_echelon">
+          <option value="0">0</option>
+          <option value="1">1er</option>
+          <option value="2">2eme</option>
+          <option value="3">3eme</option>
+          <option value="4">4eme</option>
+          <option value="5">5eme</option>
+          <option value="6">6eme</option>
+          <option value="7">7eme</option>
+          <option value="8">8eme</option>
+          <option value="9">9eme</option>
+          <option value="10">10eme</option>
+          <option value="11">11eme</option>
+          <option value="12">12eme</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Numéro d'échelon :</label>
+        <input
+          type="number"
+          class="form-control NE"
+          placeholder="Numéro d'échelon"
+          name="echelon"
+          value="0"
+          required
+        />
+      </div>
+      <div class="col">
+        <label class="form-label">Grille indiciaire des traitement :</label>
+        <input
+          type="number"
+          class="form-control GIT"
+          placeholder="Grille indiciaire des traitement"
+          name="grille"
+          value="0"
+          required
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Indémnité SAC</label>
+        <input type="text" class="form-control IISAC" required />
+        <select class="form-select ISAC" name="indemite_sac">
+          <option value="0">0</option>
+          <option value="40">-40%</option>
+        </select>
+      </div>
+      <div class="col">
+        <label class="form-label">Indémnité STC</label>
+        <input type="text" class="form-control IISTC" required />
+        <select class="form-select ISTC" name="indemite_stc">
+          <option value="0">0</option>
+          <option value="25">-25%</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Sécurité sociale :</label>
+        <input
+          type="number"
+          class="form-control SS"
+          placeholder="Sécurité sociale"
+          name="securite"
+          value="0"
+          required
+        />
+      </div>
+      <div class="col">
+        <label class="form-label">Salaire brut imposable :</label>
+        <input
+          type="number"
+          class="form-control SBI"
+          placeholder="Salaire brut imposable"
+          name="salaire_brut"
+          value="0"
+          required
+        />
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %} {% block script %}
+<script>
+  var filiere = document.querySelector(".F");
+  var gradeA = document.querySelector(".A");
+  var gradeI = document.querySelector(".I");
+  var gradeL = document.querySelector(".LGAI");
+  var corpsL = document.querySelector(".LCAI");
+  var corpsCA = document.querySelector(".CA");
+  var corpsCI = document.querySelector(".CI");
+  var categorie = document.querySelector(".CCA");
+  var indice = document.querySelector(".IN");
+  var categorieL = document.querySelector(".CCAL");
+  var indiceL = document.querySelector(".INL");
+  var salaireL = document.querySelector(".SBL");
+  var salaire = document.querySelector(".SB");
+  var securité = document.querySelector(".SS");
+  var brute = document.querySelector(".SBI");
+
+  filiere.onchange = () => {
+    if (filiere.options[filiere.selectedIndex].value === "A") {
+      gradeL.style.display = "block";
+      gradeA.style.display = "block";
+      corpsL.style.display = "block";
+      corpsCA.style.display = "block";
+      categorie.style.display = "block";
+      indice.style.display = "block";
+      categorieL.style.display = "block";
+      indiceL.style.display = "block";
+      salaire.style.display = "block";
+      salaireL.style.display = "block";
+      /*info*/
+
+      gradeI.style.display = "none";
+      corpsCI.style.display = "none";
+    } else if (filiere.options[filiere.selectedIndex].value === "I") {
+      gradeL.style.display = "block";
+      gradeI.style.display = "block";
+      corpsL.style.display = "block";
+      corpsCI.style.display = "block";
+      categorie.style.display = "block";
+      indice.style.display = "block";
+      categorieL.style.display = "block";
+      indiceL.style.display = "block";
+      salaire.style.display = "block";
+      salaireL.style.display = "block";
+
+      /*admini*/
+
+      gradeA.style.display = "none";
+
+      corpsCA.style.display = "none";
+    } else {
+      console.log("non");
+    }
+  };
+
+  gradeA.onchange = () => {
+    /*change corps*/
+    corpsCA.selectedIndex = gradeA.options[gradeA.selectedIndex].dataset.corps;
+    categorie.value = gradeA.options[gradeA.selectedIndex].dataset.categorie;
+    var indiceValue = gradeA.options[gradeA.selectedIndex].dataset.indice;
+    indice.value = indiceValue;
+    var indiceValue1 = parseInt(indiceValue);
+    console.log(indiceValue1 * 45);
+    salaire.value = indiceValue1 * 45;
+    securité.value = salaire.value - (salaire.value * 9) / 100;
+    brute.value = salaire.value;
+  };
+
+  gradeI.onchange = () => {
+    /*change corps*/
+    corpsCI.selectedIndex = gradeI.options[gradeI.selectedIndex].dataset.corps;
+    categorie.value = gradeI.options[gradeI.selectedIndex].dataset.categorie;
+    var indiceValue = gradeI.options[gradeI.selectedIndex].dataset.indice;
+    indice.value = indiceValue;
+    var indiceValue1 = parseInt(indiceValue);
+    console.log(indiceValue1 * 45);
+    salaire.value = indiceValue1 * 45;
+    securité.value = salaire.value - (salaire.value * 9) / 100;
+    brute.value = salaire.value;
+  };
+
+  /* champs salaire brut imposable*/
+
+  var poste_occup = document.querySelector(".PO");
+  var bonification_ind = document.querySelector(".BI");
+  var categorie_promo = document.querySelector(".CP");
+  var groupe = document.querySelector(".GR");
+  var indice_min = document.querySelector(".IM");
+  var indice_echelon = document.querySelector(".IE");
+  var numero_echelon = document.querySelector(".NE");
+  var grille = document.querySelector(".GIT");
+  var sac = document.querySelector(".ISAC");
+  var stc = document.querySelector(".ISTC");
+
+  /* 16*12 array*/
+  let list = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120],
+    [0, 11, 22, 33, 44, 55, 66, 77, 88, 99, 110, 120, 131],
+    [0, 12, 24, 36, 48, 60, 72, 84, 96, 108, 120, 132, 144],
+    [0, 13, 26, 39, 53, 66, 79, 92, 105, 118, 132, 145, 158],
+    [0, 14, 29, 43, 58, 72, 86, 101, 115, 130, 144, 158, 173],
+    [0, 16, 32, 47, 63, 79, 95, 110, 126, 142, 158, 173, 189],
+    [0, 17, 35, 52, 70, 87, 104, 122, 139, 157, 174, 191, 209],
+    [0, 19, 38, 57, 76, 95, 114, 133, 152, 171, 190, 208, 225],
+    [0, 21, 42, 63, 84, 105, 125, 146, 167, 188, 209, 230, 251],
+    [0, 23, 45, 68, 91, 113, 136, 159, 181, 204, 227, 249, 272],
+    [0, 25, 50, 75, 100, 125, 149, 174, 199, 224, 249, 274, 299],
+    [0, 27, 54, 81, 107, 134, 161, 188, 215, 242, 269, 295, 322],
+    [0, 29, 58, 87, 116, 145, 173, 202, 231, 260, 289, 318, 347],
+    [0, 31, 62, 93, 124, 155, 186, 217, 248, 279, 311, 342, 373],
+    [0, 33, 67, 100, 133, 167, 200, 233, 266, 300, 333, 366, 400],
+    [0, 36, 71, 107, 143, 178, 214, 250, 285, 321, 357, 392, 428],
+  ];
+  poste_occup.onchange = () => {
+    var m = parseInt(
+      poste_occup.options[poste_occup.selectedIndex].dataset.indiciaire
+    );
+    bonification_ind.value = m * 45;
+    var m1 = parseInt(securité.value);
+    var m2 = parseInt(bonification_ind.value);
+    securité.value = m1 + m2 - (m2 * 9) / 100;
+    brute.value = m1 + m2;
+  };
+
+  categorie_promo.onchange = () => {
+    groupe.value =
+      categorie_promo.options[categorie_promo.selectedIndex].dataset.groupe;
+    indice_min.value =
+      categorie_promo.options[categorie_promo.selectedIndex].dataset.indicem;
+    var m1 = parseInt(securité.value);
+    var m2 = parseInt(indice_min.value);
+    securité.value = m1 + m2 - (m2 * 9) / 100;
+    brute.value = m1 + m2;
+  };
+
+  indice_echelon.onchange = () => {
+    var j = indice_echelon.options[indice_echelon.selectedIndex].value;
+    var i = categorie_promo.options[categorie_promo.selectedIndex].value;
+    numero_echelon.value = list[i][j];
+    grille.value = list[i][j] * 45;
+    var m1 = parseInt(securité.value);
+    var m2 = parseInt(grille.value);
+    securité.value = m1 + m2 - (m2 * 9) / 100;
+    brute.value = m1 + m2;
+  };
+  sac.onchange = () => {
+    cent = sac.options[sac.selectedIndex].value;
+    var iisac = document.querySelector(".IISAC");
+    iisac.value = salaire.value * (cent / 100) + " da";
+    iisac.style.display = "block";
+    sac.style.display = "none";
+    var m1 = parseInt(securité.value);
+    var v = m1 * (cent / 100);
+    securité.value = m1 + v - (v * 9) / 100;
+    brute.value = m1 + v;
+  };
+  stc.onchange = () => {
+    cent = stc.options[stc.selectedIndex].value;
+    var iistc = document.querySelector(".IISTC");
+    iistc.value = salaire.value * (cent / 100) + " da";
+    iistc.style.display = "block";
+    stc.style.display = "none";
+    var m1 = parseInt(securité.value);
+    var u = m1 * (cent / 100);
+    securité.value = m1 + u - (u * 9) / 100;
+    brute.value = m1 + u;
+  };
+</script>
+{% endblock %}

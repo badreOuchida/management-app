@@ -13,4 +13,5 @@ urlpatterns = [
     path('ajoutats',ajoutatsView,name="ajoutats"),
     path('supprimerats/<int:pk>',supprimeratsView,name="supprimerats"),
     path('editats/<int:pk>',editeatsView,name="editats"),
+    path('ajoutpaie',AjoutPaie,name="ajoutpaie")
 ]
