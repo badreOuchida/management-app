@@ -273,6 +273,19 @@ td {
 .NE,
 .GIT,
 .SBI,
-.SS {
+.SS,
+.IRG2,
+.TO {
   pointer-events: none;
+}
+
+.titre {
+  background-color: #2f3541;
+  color: #fff;
+  margin: 14px;
+  border-radius: 5px;
+}
+
+.titre h4 {
+  padding: 5px 10px;
 }

@@ -5,7 +5,9 @@
     <div class="banner">
       <h1>Gestion de paie</h1>
     </div>
-    <div class="row"><h4>Champs salaire de base</h4></div>
+    <div class="row">
+      <div class="col titre"><h4>Champs salaire de base</h4></div>
+    </div>
     <!-- first -->
     <div class="row">
       <div class="col">
@@ -277,13 +279,12 @@
         />
       </div>
     </div>
-    <!--valide-->
-    <div class="row">
-      <hr />
-    </div>
+
     <!--champs salaire brut imposable-->
     <div class="row">
-      <h4>Champs salaire brut imposable</h4>
+      <div class="col titre">
+        <h4>Champs salaire brut imposable</h4>
+      </div>
     </div>
     <!--Poste occupé-->
     <div class="row">
@@ -470,6 +471,96 @@
           style="color: red"
         />
       </div>
+    </div>
+
+    <!-- Champs total brute imposable -->
+    <div class="row">
+      <div class="col titre"><h4>Champs total brute imposable</h4></div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Indimnité transport : (en DA)</label>
+        <input
+          type="number"
+          class="form-control IT"
+          placeholder="Indimnité transport"
+          name="indimnite_transport"
+          value="0"
+          required
+        />
+      </div>
+      <div class="col">
+        <label class="form-label">Indimnité panier : (en DA)</label>
+        <input
+          type="number"
+          class="form-control IP"
+          placeholder="Indimnité panier"
+          name="indimnite_panier"
+          value="0"
+          required
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Total brute imposable IRG : (en DA)</label>
+        <input
+          type="number"
+          class="form-control IRG1"
+          placeholder="Total brute imposable IRG"
+          name="totale_brute_imposable_irg"
+          value="0"
+          required
+          style="color: red"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label class="form-label">IRG : (en DA)</label>
+        <input
+          type="number"
+          class="form-control IRG2"
+          placeholder="IRG"
+          name="irg"
+          value="0"
+          required
+        />
+      </div>
+      <div class="col">
+        <label class="form-label">Allocation familiale : (en DA)</label>
+        <input
+          type="number"
+          class="form-control AF"
+          placeholder="Allocation familiale"
+          name="allocation_familiale"
+          value="0"
+          required
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Totale : (en DA)</label>
+        <input
+          type="number"
+          class="form-control TO"
+          placeholder="Totale"
+          name="totale"
+          value="0"
+          required
+          style="color: red"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <button
+        class="btn btn-primary"
+        type="submit"
+        style="width: auto; margin: 0 auto"
+      >
+        Valider
+      </button>
     </div>
   </form>
 </div>
@@ -672,6 +763,73 @@
     var m2 = m1 - (m1 * 9) / 100;
     securité.value = m1.toFixed(2);
     brute.value = m2.toFixed(2);
+  };
+
+  iistc.onclick = () => {
+    iistc.style.display = "none";
+    stc.style.display = "block";
+  };
+
+  iisac.onclick = () => {
+    iisac.style.display = "none";
+    sac.style.display = "block";
+  };
+
+  /* champs total brute imposable */
+
+  var indimnite_transport = document.querySelector(".IT");
+  var indimnite_panier = document.querySelector(".IP");
+  var totale_brute_imposable_irg = document.querySelector(".IRG1");
+  var irg = document.querySelector(".IRG2");
+  var allocation_familiale = document.querySelector(".AF");
+  var totale = document.querySelector(".TO");
+
+  indimnite_transport.onchange = () => {
+    var k0 = parseFloat(indimnite_transport.value);
+    var k1 = parseFloat(brute.value);
+    var k2 = parseFloat(indimnite_panier.value);
+    var s = parseFloat(irg.value);
+    var y = parseFloat(allocation_familiale.value);
+    var w = k0 + k1 + k2;
+    var z = w - s + y;
+    totale_brute_imposable_irg.value = w.toFixed(2);
+    totale.value = z.toFixed(2);
+  };
+
+  indimnite_panier.onchange = () => {
+    var k0 = parseFloat(indimnite_transport.value);
+    var k1 = parseFloat(brute.value);
+    var k2 = parseFloat(indimnite_panier.value);
+    var s = parseFloat(irg.value);
+    var y = parseFloat(allocation_familiale.value);
+    var w = k0 + k1 + k2;
+    var z = w - s + y;
+    totale_brute_imposable_irg.value = w.toFixed(2);
+    totale.value = z.toFixed(2);
+  };
+
+  irg.onchange = () => {
+    var k0 = parseFloat(indimnite_transport.value);
+    var k1 = parseFloat(brute.value);
+    var k2 = parseFloat(indimnite_panier.value);
+    var s = parseFloat(irg.value);
+    var y = parseFloat(allocation_familiale.value);
+    var w = k0 + k1 + k2;
+    var z = w - s + y;
+    totale_brute_imposable_irg.value = w.toFixed(2);
+    totale.value = z.toFixed(2);
+  };
+
+  allocation_familiale.onchange = () => {
+    var k0 = parseFloat(indimnite_transport.value);
+    var k1 = parseFloat(brute.value);
+    var k2 = parseFloat(indimnite_panier.value);
+    var s = parseFloat(irg.value);
+    var y = parseFloat(allocation_familiale.value);
+    var w = k0 + k1 + k2;
+    var z = w - s + y;
+    totale_brute_imposable_irg.value = w.toFixed(2);
+    totale.value = z.toFixed(2);
   };
 </script>
 {% endblock %}
