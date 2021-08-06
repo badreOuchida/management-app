@@ -430,7 +430,7 @@
     <div class="row">
       <div class="col">
         <label class="form-label">Indémnité SAC : (en DA)</label>
-        <input type="number" class="form-control IISAC" required />
+        <input type="number" class="form-control IISAC" value="0" required />
         <select class="form-select ISAC" name="indemite_sac">
           <option value="0">0</option>
           <option value="40">-40%</option>
@@ -438,7 +438,7 @@
       </div>
       <div class="col">
         <label class="form-label">Indémnité STC : (en DA)</label>
-        <input type="number" class="form-control IISTC" required />
+        <input type="number" class="form-control IISTC" value="0" required />
         <select class="form-select ISTC" name="indemite_stc">
           <option value="0">0</option>
           <option value="25">-25%</option>
@@ -570,6 +570,8 @@
   var grille = document.querySelector(".GIT");
   var sac = document.querySelector(".ISAC");
   var stc = document.querySelector(".ISTC");
+  var iisac = document.querySelector(".IISAC");
+  var iistc = document.querySelector(".IISTC");
 
   /* 16*12 array*/
   let list = [
@@ -597,12 +599,10 @@
     );
     var p = m * 45;
     bonification_ind.value = p.toFixed(2);
-    var m1 = parseFloat(brute.value);
-    var m2 = parseFloat(securité.value);
-    var o1 = m2 + p - (p * 9) / 100;
-    var o2 = m1 + p;
-    securité.value = o1.toFixed(2);
-    brute.value = o2.toFixed(2);
+    var m1 = parseFloat(salaire.value) + p;
+    var m2 = m1 - (m1 * 9) / 100;
+    securité.value = m1.toFixed(2);
+    brute.value = m2.toFixed(2);
   };
 
   categorie_promo.onchange = () => {
@@ -613,13 +613,11 @@
         categorie_promo.options[categorie_promo.selectedIndex].dataset.indicem
       ) * 45;
     indice_min.value = uu.toFixed(2);
-    var m1 = parseFloat(brute.value);
-    var m2 = parseFloat(securité.value);
-    var p = parseFloat(indice_min.value);
-    var o1 = m2 + p - (p * 9) / 100;
-    var o2 = m1 + p;
-    securité.value = o1.toFixed(2);
-    brute.value = o2.toFixed(2);
+    var m1 =
+      parseFloat(salaire.value) + uu + parseFloat(bonification_ind.value);
+    var m2 = m1 - (m1 * 9) / 100;
+    securité.value = m1.toFixed(2);
+    brute.value = m2.toFixed(2);
   };
 
   indice_echelon.onchange = () => {
@@ -628,44 +626,52 @@
     numero_echelon.value = list[i][j];
     var p = list[i][j] * 45;
     grille.value = p.toFixed(2);
-    var m2 = parseFloat(securité.value);
-    var m1 = parseFloat(brute.value);
-    var o1 = m2 + p - (p * 9) / 100;
-    var o2 = m1 + p;
-    securité.value = o1.toFixed(2);
-    brute.value = o2.toFixed(2);
+    var m1 =
+      parseFloat(salaire.value) +
+      parseFloat(bonification_ind.value) +
+      parseFloat(indice_min.value) +
+      p;
+    var m2 = m1 - (m1 * 9) / 100;
+    securité.value = m1.toFixed(2);
+    brute.value = m2.toFixed(2);
   };
   sac.onchange = () => {
     cent = sac.options[sac.selectedIndex].value;
-    var iisac = document.querySelector(".IISAC");
     var oo = salaire.value * (cent / 100);
     iisac.value = oo.toFixed(2);
     iisac.style.display = "block";
     sac.style.display = "none";
-    var m1 = parseFloat(brute.value);
-    var m2 = parseFloat(securité.value);
     var p = parseFloat(salaire.value);
     var v = p * (cent / 100);
-    var o1 = m2 + v - (v * 9) / 100;
-    var o2 = m1 + v;
-    securité.value = o1.toFixed(2);
-    brute.value = o2.toFixed(2);
+    var m1 =
+      parseFloat(salaire.value) +
+      parseFloat(bonification_ind.value) +
+      parseFloat(indice_min.value) +
+      parseFloat(grille.value) +
+      parseFloat(iistc.value) +
+      v;
+    var m2 = m1 - (m1 * 9) / 100;
+    securité.value = m1.toFixed(2);
+    brute.value = m2.toFixed(2);
   };
   stc.onchange = () => {
     cent = stc.options[stc.selectedIndex].value;
-    var iistc = document.querySelector(".IISTC");
     var oo = salaire.value * (cent / 100);
     iistc.value = oo.toFixed(2);
     iistc.style.display = "block";
     stc.style.display = "none";
-    var m1 = parseFloat(brute.value);
-    var m2 = parseFloat(securité.value);
     var p = parseFloat(salaire.value);
     var v = p * (cent / 100);
-    var o1 = m2 + v - (v * 9) / 100;
-    var o2 = m1 + v;
-    securité.value = o1.toFixed(2);
-    brute.value = o2.toFixed(2);
+    var m1 =
+      parseFloat(salaire.value) +
+      parseFloat(bonification_ind.value) +
+      parseFloat(indice_min.value) +
+      parseFloat(grille.value) +
+      parseFloat(iisac.value) +
+      v;
+    var m2 = m1 - (m1 * 9) / 100;
+    securité.value = m1.toFixed(2);
+    brute.value = m2.toFixed(2);
   };
 </script>
 {% endblock %}
