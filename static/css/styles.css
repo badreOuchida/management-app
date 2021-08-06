@@ -212,7 +212,7 @@ td {
   justify-content: center;
 }
 
-.container-fluid {
+.bbb {
   display: flex;
   padding: 0;
 }
@@ -274,7 +274,7 @@ td {
 .GIT,
 .SBI,
 .SS,
-.IRG2,
+.IRG1,
 .TO {
   pointer-events: none;
 }
