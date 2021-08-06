@@ -266,13 +266,14 @@
     <!--salaire-->
     <div class="row">
       <div class="col">
-        <label class="form-label SBL">Salaire de base : </label>
+        <label class="form-label SBL">Salaire de base : (en DA)</label>
         <input
           type="number"
           class="form-control SB"
           value="0"
           name="salaire"
           required
+          style="color: red"
         />
       </div>
     </div>
@@ -318,7 +319,7 @@
         </select>
       </div>
       <div class="col">
-        <label class="form-label">Bonification indiciaire :</label>
+        <label class="form-label">Bonification indiciaire : (en DA)</label>
         <input
           type="number"
           class="form-control BI"
@@ -369,7 +370,7 @@
 
     <div class="row">
       <div class="col">
-        <label class="form-label">Indice minimal :</label>
+        <label class="form-label">Indice minimal : (en DA)</label>
         <input
           type="number"
           class="form-control IM"
@@ -413,7 +414,9 @@
         />
       </div>
       <div class="col">
-        <label class="form-label">Grille indiciaire des traitement :</label>
+        <label class="form-label"
+          >Grille indiciaire des traitement : (en DA)</label
+        >
         <input
           type="number"
           class="form-control GIT"
@@ -426,16 +429,16 @@
     </div>
     <div class="row">
       <div class="col">
-        <label class="form-label">Indémnité SAC</label>
-        <input type="text" class="form-control IISAC" required />
+        <label class="form-label">Indémnité SAC : (en DA)</label>
+        <input type="number" class="form-control IISAC" required />
         <select class="form-select ISAC" name="indemite_sac">
           <option value="0">0</option>
           <option value="40">-40%</option>
         </select>
       </div>
       <div class="col">
-        <label class="form-label">Indémnité STC</label>
-        <input type="text" class="form-control IISTC" required />
+        <label class="form-label">Indémnité STC : (en DA)</label>
+        <input type="number" class="form-control IISTC" required />
         <select class="form-select ISTC" name="indemite_stc">
           <option value="0">0</option>
           <option value="25">-25%</option>
@@ -445,7 +448,7 @@
 
     <div class="row">
       <div class="col">
-        <label class="form-label">Sécurité sociale :</label>
+        <label class="form-label">Sécurité sociale : (-9%) (en DA)</label>
         <input
           type="number"
           class="form-control SS"
@@ -456,7 +459,7 @@
         />
       </div>
       <div class="col">
-        <label class="form-label">Salaire brut imposable :</label>
+        <label class="form-label">Salaire brut imposable : (en DA)</label>
         <input
           type="number"
           class="form-control SBI"
@@ -464,6 +467,7 @@
           name="salaire_brut"
           value="0"
           required
+          style="color: red"
         />
       </div>
     </div>
@@ -531,11 +535,13 @@
     categorie.value = gradeA.options[gradeA.selectedIndex].dataset.categorie;
     var indiceValue = gradeA.options[gradeA.selectedIndex].dataset.indice;
     indice.value = indiceValue;
-    var indiceValue1 = parseInt(indiceValue);
+    var indiceValue1 = parseFloat(indiceValue);
     console.log(indiceValue1 * 45);
-    salaire.value = indiceValue1 * 45;
-    securité.value = salaire.value - (salaire.value * 9) / 100;
-    brute.value = salaire.value;
+    var p = indiceValue1 * 45;
+    salaire.value = p.toFixed(2);
+    securité.value = p.toFixed(2);
+    var o = p - (p * 9) / 100;
+    brute.value = o.toFixed(2);
   };
 
   gradeI.onchange = () => {
@@ -544,11 +550,12 @@
     categorie.value = gradeI.options[gradeI.selectedIndex].dataset.categorie;
     var indiceValue = gradeI.options[gradeI.selectedIndex].dataset.indice;
     indice.value = indiceValue;
-    var indiceValue1 = parseInt(indiceValue);
-    console.log(indiceValue1 * 45);
-    salaire.value = indiceValue1 * 45;
-    securité.value = salaire.value - (salaire.value * 9) / 100;
-    brute.value = salaire.value;
+    var indiceValue1 = parseFloat(indiceValue);
+    var p = indiceValue1 * 45;
+    salaire.value = p.toFixed(2);
+    securité.value = p.toFixed(2);
+    var o = p - (p * 9) / 100;
+    brute.value = o.toFixed(2);
   };
 
   /* champs salaire brut imposable*/
@@ -585,58 +592,80 @@
     [0, 36, 71, 107, 143, 178, 214, 250, 285, 321, 357, 392, 428],
   ];
   poste_occup.onchange = () => {
-    var m = parseInt(
+    var m = parseFloat(
       poste_occup.options[poste_occup.selectedIndex].dataset.indiciaire
     );
-    bonification_ind.value = m * 45;
-    var m1 = parseInt(securité.value);
-    var m2 = parseInt(bonification_ind.value);
-    securité.value = m1 + m2 - (m2 * 9) / 100;
-    brute.value = m1 + m2;
+    var p = m * 45;
+    bonification_ind.value = p.toFixed(2);
+    var m1 = parseFloat(brute.value);
+    var m2 = parseFloat(securité.value);
+    var o1 = m2 + p - (p * 9) / 100;
+    var o2 = m1 + p;
+    securité.value = o1.toFixed(2);
+    brute.value = o2.toFixed(2);
   };
 
   categorie_promo.onchange = () => {
     groupe.value =
       categorie_promo.options[categorie_promo.selectedIndex].dataset.groupe;
-    indice_min.value =
-      categorie_promo.options[categorie_promo.selectedIndex].dataset.indicem;
-    var m1 = parseInt(securité.value);
-    var m2 = parseInt(indice_min.value);
-    securité.value = m1 + m2 - (m2 * 9) / 100;
-    brute.value = m1 + m2;
+    var uu =
+      parseFloat(
+        categorie_promo.options[categorie_promo.selectedIndex].dataset.indicem
+      ) * 45;
+    indice_min.value = uu.toFixed(2);
+    var m1 = parseFloat(brute.value);
+    var m2 = parseFloat(securité.value);
+    var p = parseFloat(indice_min.value);
+    var o1 = m2 + p - (p * 9) / 100;
+    var o2 = m1 + p;
+    securité.value = o1.toFixed(2);
+    brute.value = o2.toFixed(2);
   };
 
   indice_echelon.onchange = () => {
     var j = indice_echelon.options[indice_echelon.selectedIndex].value;
     var i = categorie_promo.options[categorie_promo.selectedIndex].value;
     numero_echelon.value = list[i][j];
-    grille.value = list[i][j] * 45;
-    var m1 = parseInt(securité.value);
-    var m2 = parseInt(grille.value);
-    securité.value = m1 + m2 - (m2 * 9) / 100;
-    brute.value = m1 + m2;
+    var p = list[i][j] * 45;
+    grille.value = p.toFixed(2);
+    var m2 = parseFloat(securité.value);
+    var m1 = parseFloat(brute.value);
+    var o1 = m2 + p - (p * 9) / 100;
+    var o2 = m1 + p;
+    securité.value = o1.toFixed(2);
+    brute.value = o2.toFixed(2);
   };
   sac.onchange = () => {
     cent = sac.options[sac.selectedIndex].value;
     var iisac = document.querySelector(".IISAC");
-    iisac.value = salaire.value * (cent / 100) + " da";
+    var oo = salaire.value * (cent / 100);
+    iisac.value = oo.toFixed(2);
     iisac.style.display = "block";
     sac.style.display = "none";
-    var m1 = parseInt(securité.value);
-    var v = m1 * (cent / 100);
-    securité.value = m1 + v - (v * 9) / 100;
-    brute.value = m1 + v;
+    var m1 = parseFloat(brute.value);
+    var m2 = parseFloat(securité.value);
+    var p = parseFloat(salaire.value);
+    var v = p * (cent / 100);
+    var o1 = m2 + v - (v * 9) / 100;
+    var o2 = m1 + v;
+    securité.value = o1.toFixed(2);
+    brute.value = o2.toFixed(2);
   };
   stc.onchange = () => {
     cent = stc.options[stc.selectedIndex].value;
     var iistc = document.querySelector(".IISTC");
-    iistc.value = salaire.value * (cent / 100) + " da";
+    var oo = salaire.value * (cent / 100);
+    iistc.value = oo.toFixed(2);
     iistc.style.display = "block";
     stc.style.display = "none";
-    var m1 = parseInt(securité.value);
-    var u = m1 * (cent / 100);
-    securité.value = m1 + u - (u * 9) / 100;
-    brute.value = m1 + u;
+    var m1 = parseFloat(brute.value);
+    var m2 = parseFloat(securité.value);
+    var p = parseFloat(salaire.value);
+    var v = p * (cent / 100);
+    var o1 = m2 + v - (v * 9) / 100;
+    var o2 = m1 + v;
+    securité.value = o1.toFixed(2);
+    brute.value = o2.toFixed(2);
   };
 </script>
 {% endblock %}
