@@ -1,6 +1,6 @@
 {% extends 'main.html' %} {% block body %}
 <div class="container ajout" style="height: auto">
-  <form enctype="multipart/form-data" action="{% url 'ajout' %}" method="POST">
+  <form enctype="multipart/form-data" action="{% url 'ajoutpaie' paie.id %}" method="POST">
     {% csrf_token %}
     <div class="banner">
       <h1>Gestion de paie</h1>
@@ -12,9 +12,9 @@
     <div class="row">
       <div class="col">
         <select class="form-select F" name="filiere">
-          <option selected>Filiere</option>
-          <option value="A">Administration generale</option>
-          <option value="I">Informatique</option>
+          <option value="0" {% if paie.filiere == "0" %}selected{% endif %}>Filiere</option>
+          <option value="A" {% if paie.filiere == "A" %}selected{% endif %}>Administration generale</option>
+          <option value="I" {% if paie.filiere == "I" %}selected{% endif %} >Informatique</option>
         </select>
       </div>
     </div>
@@ -22,23 +22,25 @@
     <div class="row">
       <div class="col">
         <!--select grade admi-->
-        <label class="form-label LGAI">Corps : </label>
+        <label class="form-label LGAI">Grades : </label>
         <select class="form-select A" name="grade" data-filiere="A">
-          <option data-corps="1" selected>Grade</option>
+          <option data-corps="1" value="0" {% if paie.grade == '0' %}selected{% endif %}>Grade</option>
           <!--administrateurs-->
           <option
             value="GA"
             data-corps="1"
             data-categorie="12"
             data-indice="537"
+            {% if paie.grade == 'GA' %}selected{% endif %}
           >
-            Adinistrateur
+            Adimistrateur
           </option>
           <option
             value="GAP"
             data-corps="1"
             data-categorie="14"
             data-indice="621"
+            {% if paie.grade == 'GAP' %}selected{% endif %}
           >
             Administrateur principal
           </option>
@@ -47,6 +49,7 @@
             data-corps="1"
             data-categorie="16"
             data-indice="713"
+            {% if paie.grade == 'GAC' %}selected{% endif %}
           >
             Administrateur conseiller
           </option>
@@ -56,14 +59,16 @@
             data-corps="2"
             data-categorie="9"
             data-indice="418"
+            {% if paie.grade == 'GAA' %}selected{% endif %}
           >
             Attaché d'administration
           </option>
           <option
-            value="GAC"
+            value="GPA"
             data-corps="2"
             data-categorie="10"
             data-indice="453"
+            {% if paie.grade == 'GPA' %}selected{% endif %}
           >
             Attaché principale d'administration
           </option>
@@ -73,6 +78,7 @@
             data-corps="3"
             data-categorie="5"
             data-indice="288"
+            {% if paie.grade == 'AB' %}selected{% endif %}
           >
             Agents de bureau
           </option>
@@ -81,6 +87,7 @@
             data-corps="3"
             data-categorie="7"
             data-indice="348"
+            {% if paie.grade == 'AA' %}selected{% endif %}
           >
             Agent d'administration
           </option>
@@ -89,6 +96,7 @@
             data-corps="3"
             data-categorie="8"
             data-indice="379"
+            {% if paie.grade == 'APA' %}selected{% endif %}
           >
             Agent principale d'administration
           </option>
@@ -98,10 +106,11 @@
             data-corps="4"
             data-categorie="5"
             data-indice="288"
+            {% if paie.grade == 'AS' %}selected{% endif %}
           >
             Agents de saisie
           </option>
-          <option value="S" data-corps="4" data-categorie="6" data-indice="315">
+          <option value="S" data-corps="4" data-categorie="6" data-indice="315" {% if paie.grade == 'S' %}selected{% endif %}>
             Secretaire
           </option>
           <option
@@ -109,6 +118,7 @@
             data-corps="4"
             data-categorie="8"
             data-indice="379"
+            {% if paie.grade == 'SD' %}selected{% endif %}
           >
             Secretaire de direction
           </option>
@@ -117,6 +127,7 @@
             data-corps="4"
             data-categorie="10"
             data-indice="453"
+            {% if paie.grade == 'SPD' %}selected{% endif %}
           >
             Secretaire principale de direction
           </option>
@@ -126,6 +137,7 @@
             data-corps="5"
             data-categorie="5"
             data-indice="288"
+            {% if paie.grade == 'ACA' %}selected{% endif %}
           >
             Aide comptable administrative
           </option>
@@ -134,6 +146,7 @@
             data-corps="5"
             data-categorie="8"
             data-indice="379"
+            {% if paie.grade == 'CA' %}selected{% endif %}
           >
             Comptable administrative
           </option>
@@ -142,6 +155,7 @@
             data-corps="5"
             data-categorie="10"
             data-indice="453"
+            {% if paie.grade == 'CAP' %}selected{% endif %}
           >
             Comptable administrative principale
           </option>
@@ -149,14 +163,15 @@
         <!--fin select grade admi-->
 
         <!--select info-->
-        <select class="form-select I" name="grades" data-filiere="I">
-          <option data-corps="0" selected>Grades</option>
+        <select class="form-select I" name="grade" data-filiere="I">
+          <option data-corps="0" value="0" {% if paie.grade == '0' %}selected{% endif %}>Grades</option>
           <!--Ingenieurs-->
           <option
             value="IA"
             data-corps="1"
             data-categorie="11"
             data-indice="498"
+            {% if paie.grade == 'IA' %}selected{% endif %}
           >
             Ingenieur d'application
           </option>
@@ -165,6 +180,7 @@
             data-corps="1"
             data-categorie="13"
             data-indice="578"
+            {% if paie.grade == 'IE' %}selected{% endif %}
           >
             Ingenieur d'etat
           </option>
@@ -173,6 +189,7 @@
             data-corps="1"
             data-categorie="14"
             data-indice="621"
+            {% if paie.grade == 'IP' %}selected{% endif %}
           >
             Ingenieur principal
           </option>
@@ -181,11 +198,12 @@
             data-corps="1"
             data-categorie="16"
             data-indice="713"
+            {% if paie.grade == 'IC' %}selected{% endif %}
           >
             Ingenieur en chef
           </option>
           <!--Techniciens-->
-          <option value="T" data-corps="2" data-categorie="8" data-indice="379">
+          <option value="T" data-corps="2" data-categorie="8" data-indice="T" {% if paie.grade == 'T' %}selected{% endif %}>
             Technicien
           </option>
           <option
@@ -193,6 +211,7 @@
             data-corps="2"
             data-categorie="10"
             data-indice="453"
+            {% if paie.grade == 'TS' %}selected{% endif %}
           >
             Technicien superieur
           </option>
@@ -202,6 +221,7 @@
             data-corps="3"
             data-categorie="7"
             data-indice="348"
+            {% if paie.grade == 'AT' %}selected{% endif %}
           >
             Adjoint technique
           </option>
@@ -211,6 +231,7 @@
             data-corps="4"
             data-categorie="5"
             data-indice="288"
+            {% if paie.grade == 'ATS' %}selected{% endif %}
           >
             Agent technique
           </option>
@@ -221,22 +242,22 @@
         <label class="form-label LCAI">Corps : </label>
         <!--select corps-->
         <select class="form-select CA" name="corps">
-          <option>COPRS</option>
-          <option value="A">Administrateurs</option>
-          <option value="AD">Attachés d'dministrations</option>
-          <option value="AA">Agents d'dministrations</option>
-          <option value="S">Secretaire</option>
-          <option value="CA">Comptables administratifs</option>
+          <option value="0" {% if paie.corps == '0' %}selected{% endif %}>COPRS</option>
+          <option value="A" {% if paie.corps == 'A' %}selected{% endif %}>Administrateurs</option>
+          <option value="AD" {% if paie.corps == 'AD' %}selected{% endif %}>Attachés d'dministrations</option>
+          <option value="AA" {% if paie.corps == 'AA' %}selected{% endif %}>Agents d'dministrations</option>
+          <option value="S" {% if paie.corps == 'S' %}selected{% endif %}>Secretaire</option>
+          <option value="CA" {% if paie.corps == 'CA' %}selected{% endif %}>Comptables administratifs</option>
         </select>
         <!--fin select corps-->
 
         <!--select corps info -->
         <select class="form-select CI" name="corps">
-          <option selected>COPRS</option>
-          <option value="I">Ingenieurs</option>
-          <option value="T">Techniciens</option>
-          <option value="AT">Adjoint techniques</option>
-          <option value="AST">Agents techniques</option>
+          <option value="0" {% if paie.corps == '0' %}selected{% endif %}>COPRS</option>
+          <option value="I" {% if paie.corps == 'I' %}selected{% endif %}>Ingenieurs</option>
+          <option value="T" {% if paie.corps == 'T' %}selected{% endif %}>Techniciens</option>
+          <option value="AT" {% if paie.corps == 'AT' %}selected{% endif %}>Adjoint techniques</option>
+          <option value="AST" {% if paie.corps == 'AST' %}selected{% endif %}>Agents techniques</option>
         </select>
         <!--fin select corps info -->
       </div>
@@ -249,7 +270,7 @@
           type="number"
           class="form-control CCA"
           name="categorie"
-          value="0"
+          value="{{paie.categorie}}"
           required
         />
       </div>
@@ -260,7 +281,7 @@
           class="form-control IN"
           placeholder="indice"
           name="indice"
-          value="0"
+          value="{{paie.indice}}"
           required
         />
       </div>
@@ -272,9 +293,10 @@
         <input
           type="number"
           class="form-control SB"
-          value="0"
+          value="{{paie.salaire}}"
           name="salaire"
           required
+          step="0.01"
           style="color: red"
         />
       </div>
@@ -290,31 +312,31 @@
     <div class="row">
       <div class="col">
         <label class="form-label">Poste occupé :</label>
-        <select class="form-select PO" name="poste_occupé">
-          <option value="R" data-indiciaire="0">Rien</option>
-          <option value="D" data-indiciaire="1008">Directeur</option>
-          <option value="DA" data-indiciaire="605">Directeur adjoint</option>
-          <option value="CD" data-indiciaire="605">Chef de departement</option>
-          <option value="SG" data-indiciaire="605">Secretaire generale</option>
-          <option value="DB" data-indiciaire="363">
+        <select class="form-select PO" name="poste_occupe">
+          <option value="R" data-indiciaire="0" {% if paie.poste_occupe == 'R' %}selected{% endif %}>Rien</option>
+          <option value="D" data-indiciaire="1008" {% if paie.poste_occupe == 'D' %}selected{% endif %}>Directeur</option>
+          <option value="DA" data-indiciaire="605" {% if paie.poste_occupe == 'DA' %}selected{% endif %}>Directeur adjoint</option>
+          <option value="CD" data-indiciaire="605" {% if paie.poste_occupe == 'CD' %}selected{% endif %}>Chef de departement</option>
+          <option value="SG" data-indiciaire="605" {% if paie.poste_occupe == 'SG' %}selected{% endif %}>Secretaire generale</option>
+          <option value="DB" data-indiciaire="363" {% if paie.poste_occupe == 'DB' %}selected{% endif %}>
             Directeur de la bibliotheque
           </option>
-          <option value="SDPF" data-indiciaire="363">
+          <option value="SDPF" data-indiciaire="363" {% if paie.poste_occupe == 'SDPF' %}selected{% endif %}>
             Sous directeur des personnels et de la formation
           </option>
-          <option value="SDFM" data-indiciaire="363">
+          <option value="SDFM" data-indiciaire="363" {% if paie.poste_occupe == 'SDFM' %}selected{% endif %}>
             Sous directeur des finances et de moyens
           </option>
-          <option value="RCIA" data-indiciaire="363">
+          <option value="RCIA" data-indiciaire="363" {% if paie.poste_occupe == 'RCIA' %}selected{% endif %}>
             Responsable de centre d'impression et d'audiovisuel
           </option>
-          <option value="RCSI" data-indiciaire="363">
+          <option value="RCSI" data-indiciaire="363" {% if paie.poste_occupe == 'RCSI' %}selected{% endif %}>
             Responsable de centre de systemes et reseaux d'informations
           </option>
-          <option value="RHT" data-indiciaire="363">
+          <option value="RHT" data-indiciaire="363" {% if paie.poste_occupe == 'RHT' %}selected{% endif %}>
             Responsable de hall de technologies
           </option>
-          <option value="RFP" data-indiciaire="363">
+          <option value="RFP" data-indiciaire="363" {% if paie.poste_occupe == 'RFP' %}selected{% endif %}>
             Responsable de la forme de production
           </option>
         </select>
@@ -326,7 +348,7 @@
           class="form-control BI"
           placeholder="Bonification indiciaire"
           name="indiciaire"
-          value="0"
+          value="{{paie.indiciaire}}"
           required
         />
       </div>
@@ -336,23 +358,23 @@
       <div class="col">
         <label class="form-label">Catégorie de la promotion :</label>
         <select class="form-select CP" name="categorie_promo">
-          <option value="0" data-groupe="Rien" data-indicem="0">0</option>
-          <option value="1" data-groupe="D" data-indicem="200">1</option>
-          <option value="2" data-groupe="D" data-indicem="219">2</option>
-          <option value="3" data-groupe="D" data-indicem="240">3</option>
-          <option value="4" data-groupe="D" data-indicem="263">4</option>
-          <option value="5" data-groupe="D" data-indicem="288">5</option>
-          <option value="6" data-groupe="D" data-indicem="315">6</option>
-          <option value="7" data-groupe="C" data-indicem="348">7</option>
-          <option value="8" data-groupe="C" data-indicem="379">8</option>
-          <option value="9" data-groupe="B" data-indicem="418">9</option>
-          <option value="10" data-groupe="B" data-indicem="453">10</option>
-          <option value="11" data-groupe="A" data-indicem="498">11</option>
-          <option value="12" data-groupe="A" data-indicem="537">12</option>
-          <option value="13" data-groupe="A" data-indicem="578">13</option>
-          <option value="14" data-groupe="A" data-indicem="621">14</option>
-          <option value="15" data-groupe="A" data-indicem="66">15</option>
-          <option value="16" data-groupe="A" data-indicem="713">16</option>
+          <option value="0" data-groupe="Rien" data-indicem="0" {% if paie.categorie_promo == '0' %}selected{% endif %} >0</option>
+          <option value="1" data-groupe="D" data-indicem="200" {% if paie.categorie_promo == '1' %}selected{% endif %}>1</option>
+          <option value="2" data-groupe="D" data-indicem="219" {% if paie.categorie_promo == '2' %}selected{% endif %}>2</option>
+          <option value="3" data-groupe="D" data-indicem="240" {% if paie.categorie_promo == '3' %}selected{% endif %}>3</option>
+          <option value="4" data-groupe="D" data-indicem="263" {% if paie.categorie_promo == '4' %}selected{% endif %}>4</option>
+          <option value="5" data-groupe="D" data-indicem="288" {% if paie.categorie_promo == '5' %}selected{% endif %}>5</option>
+          <option value="6" data-groupe="D" data-indicem="315" {% if paie.categorie_promo == '6' %}selected{% endif %}>6</option>
+          <option value="7" data-groupe="C" data-indicem="348" {% if paie.categorie_promo == '7' %}selected{% endif %}>7</option>
+          <option value="8" data-groupe="C" data-indicem="379" {% if paie.categorie_promo == '8' %}selected{% endif %}>8</option>
+          <option value="9" data-groupe="B" data-indicem="418" {% if paie.categorie_promo == '9' %}selected{% endif %}>9</option>
+          <option value="10" data-groupe="B" data-indicem="453" {% if paie.categorie_promo == '10' %}selected{% endif %}>10</option>
+          <option value="11" data-groupe="A" data-indicem="498" {% if paie.categorie_promo == '11' %}selected{% endif %}>11</option>
+          <option value="12" data-groupe="A" data-indicem="537" {% if paie.categorie_promo == '12' %}selected{% endif %}>12</option>
+          <option value="13" data-groupe="A" data-indicem="578" {% if paie.categorie_promo == '13' %}selected{% endif %}>13</option>
+          <option value="14" data-groupe="A" data-indicem="621" {% if paie.categorie_promo == '14' %}selected{% endif %}>14</option>
+          <option value="15" data-groupe="A" data-indicem="66" {% if paie.categorie_promo == '15' %}selected{% endif %}>15</option>
+          <option value="16" data-groupe="A" data-indicem="713" {% if paie.categorie_promo == '16' %}selected{% endif %}>16</option>
         </select>
       </div>
       <div class="col">
@@ -361,7 +383,8 @@
           type="text"
           class="form-control GR"
           placeholder="Groupe"
-          name="indiciaire"
+          name="groupe"
+          value="{{paie.groupe}}"
           required
         />
       </div>
@@ -377,7 +400,7 @@
           class="form-control IM"
           placeholder="Indice minimal"
           name="indice_minimale"
-          value="0"
+          value="{{paie.indice_minimale}}"
           required
         />
       </div>
@@ -385,19 +408,19 @@
       <div class="col">
         <label class="form-label">Indice d'échellon :</label>
         <select class="form-select IE" name="indice_echelon">
-          <option value="0">0</option>
-          <option value="1">1er</option>
-          <option value="2">2eme</option>
-          <option value="3">3eme</option>
-          <option value="4">4eme</option>
-          <option value="5">5eme</option>
-          <option value="6">6eme</option>
-          <option value="7">7eme</option>
-          <option value="8">8eme</option>
-          <option value="9">9eme</option>
-          <option value="10">10eme</option>
-          <option value="11">11eme</option>
-          <option value="12">12eme</option>
+          <option value="0" {% if paie.indice_echelon == '0' %}selected{% endif %}>0</option>
+          <option value="1" {% if paie.indice_echelon == '1' %}selected{% endif %}>1er</option>
+          <option value="2" {% if paie.indice_echelon == '2' %}selected{% endif %}>2eme</option>
+          <option value="3" {% if paie.indice_echelon == '3' %}selected{% endif %}>3eme</option>
+          <option value="4" {% if paie.indice_echelon == '4' %}selected{% endif %}>4eme</option>
+          <option value="5" {% if paie.indice_echelon == '5' %}selected{% endif %}>5eme</option>
+          <option value="6" {% if paie.indice_echelon == '6' %}selected{% endif %}>6eme</option>
+          <option value="7" {% if paie.indice_echelon == '7' %}selected{% endif %}>7eme</option>
+          <option value="8" {% if paie.indice_echelon == '8' %}selected{% endif %}>8eme</option>
+          <option value="9" {% if paie.indice_echelon == '9' %}selected{% endif %}>9eme</option>
+          <option value="10" {% if paie.indice_echelon == '10' %}selected{% endif %}>10eme</option>
+          <option value="11" {% if paie.indice_echelon == '11' %}selected{% endif %}>11eme</option>
+          <option value="12" {% if paie.indice_echelon == '12' %}selected{% endif %}>12eme</option>
         </select>
       </div>
     </div>
@@ -410,7 +433,7 @@
           class="form-control NE"
           placeholder="Numéro d'échelon"
           name="echelon"
-          value="0"
+          value="{{paie.echelon}}"
           required
         />
       </div>
@@ -423,7 +446,7 @@
           class="form-control GIT"
           placeholder="Grille indiciaire des traitement"
           name="grille"
-          value="0"
+          value="{{paie.grille}}"
           required
         />
       </div>
@@ -431,16 +454,16 @@
     <div class="row">
       <div class="col">
         <label class="form-label">Indémnité SAC : (en DA)</label>
-        <input type="number" class="form-control IISAC" value="0" required />
-        <select class="form-select ISAC" name="indemite_sac">
+        <input type="number" step="0.01" class="form-control IISAC" value="{{paie.indemite_sac}}" name="indemite_sac" required />
+        <select class="form-select ISAC">
           <option value="0">0</option>
           <option value="40">-40%</option>
         </select>
       </div>
       <div class="col">
         <label class="form-label">Indémnité STC : (en DA)</label>
-        <input type="number" class="form-control IISTC" value="0" required />
-        <select class="form-select ISTC" name="indemite_stc">
+        <input type="number" step="0.01" class="form-control IISTC" value="{{paie.indemite_stc}}" name="indemite_stc" required />
+        <select class="form-select ISTC">
           <option value="0">0</option>
           <option value="25">-25%</option>
         </select>
@@ -455,7 +478,8 @@
           class="form-control SS"
           placeholder="Sécurité sociale"
           name="securite"
-          value="0"
+          value="{{paie.securite}}"
+          step="0.01"
           required
         />
       </div>
@@ -466,8 +490,9 @@
           class="form-control SBI"
           placeholder="Salaire brut imposable"
           name="salaire_brut"
-          value="0"
+          value="{{paie.salaire_brut}}"
           required
+          step="0.01"
           style="color: red"
         />
       </div>
@@ -485,7 +510,8 @@
           class="form-control IT"
           placeholder="Indimnité transport"
           name="indimnite_transport"
-          value="0"
+          value="{{paie.indimnite_transport}}"
+          step="0.01"
           required
         />
       </div>
@@ -496,7 +522,8 @@
           class="form-control IP"
           placeholder="Indimnité panier"
           name="indimnite_panier"
-          value="0"
+          value="{{paie.indimnite_panier}}"
+          step="0.01"
           required
         />
       </div>
@@ -509,7 +536,8 @@
           class="form-control IRG1"
           placeholder="Total brute imposable IRG"
           name="totale_brute_imposable_irg"
-          value="0"
+          value="{{paie.totale_brute_imposable_irg}}"
+          step="0.01"
           required
           style="color: red"
         />
@@ -523,7 +551,8 @@
           class="form-control IRG2"
           placeholder="IRG"
           name="irg"
-          value="0"
+          value="{{paie.irg}}"
+          step="0.01"
           required
         />
       </div>
@@ -534,7 +563,7 @@
           class="form-control AF"
           placeholder="Allocation familiale"
           name="allocation_familiale"
-          value="0"
+          value="{{paie.allocation_familiale}}"
           required
         />
       </div>
@@ -547,9 +576,48 @@
           class="form-control TO"
           placeholder="Totale"
           name="totale"
-          value="0"
+          value="{{paie.totale}}"
+          step="0.01"
           required
           style="color: red"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Jours travaillés : (22jours)</label>
+        <input
+          type="number"
+          class="form-control NJT"
+          placeholder="Nombre de jours travaillés"
+          name="nombre_travaille"
+          value="{{paie.nombre_travaille}}"
+          required
+        />
+      </div>
+      <div class="col">
+        <label class="form-label">Nombre d'absence : </label>
+        <input
+          type="number"
+          class="form-control NA"
+          placeholder="Nombre d'absence"
+          name="nombre_absence"
+          value="{{paie.nombre_absence}}"
+          required
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Salaire net : (en DA)</label>
+        <input
+          type="number"
+          class="form-control SN"
+          placeholder="Salaire net"
+          name="salaire_net"
+          value="{{paie.salaire_net}}"
+          step="0.01"
+          required
         />
       </div>
     </div>
@@ -783,6 +851,9 @@
   var irg = document.querySelector(".IRG2");
   var allocation_familiale = document.querySelector(".AF");
   var totale = document.querySelector(".TO");
+  var jours_trava = document.querySelector(".NJT");
+  var jours_abs = document.querySelector(".NA");
+  var salaire_net = document.querySelector(".SN");
 
   indimnite_transport.onchange = () => {
     var k0 = parseFloat(indimnite_transport.value);
@@ -830,6 +901,21 @@
     var z = w - s + y;
     totale_brute_imposable_irg.value = w.toFixed(2);
     totale.value = z.toFixed(2);
+  };
+
+  jours_trava.onchange = () => {
+    var j = parseInt(jours_trava.value);
+    if (j > 22 || j < 1) {
+      alert("vous devez entrer une valeur entre 1 et 22");
+      jours_trava.value = 0;
+    } else {
+      var t = parseFloat(totale.value);
+      var e = 22 - j;
+      console.log(e);
+      jours_abs.value = e;
+      var s = (t * j) / 22;
+      salaire_net.value = s.toFixed(2);
+    }
   };
 </script>
 {% endblock %}

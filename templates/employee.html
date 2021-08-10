@@ -80,6 +80,8 @@
         row.dataset.nom + " " + row.dataset.prenom;
       /* numero*/
       document.querySelector(".numero").innerHTML = row.dataset.numero;
+      document.querySelector(".paielink").href = "ajoutpaie/" + row.dataset.id;
+      document.querySelector(".congelink").href = "conge/" + row.dataset.id;
     };
   });
 </script>

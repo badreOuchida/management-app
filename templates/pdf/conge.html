@@ -1,0 +1,38 @@
+{% extends 'pdf/base.html' %}
+
+<!--title-->
+
+{% block title %}conge{% endblock title %}conge
+<!--body-->
+{% block body %}
+<div class="titlepdf">
+  <h1>TITRE DE CONGE</h1>
+</div>
+<div class="congebody">
+  -Nous soussignes, <strong>Mr {{user.nom}} {{user.prenom}}</strong> , agissant
+  en qualite de <strong>{{user.get_fonction_display}}</strong> dans l'ecole
+  ESTIN, attestons que:
+  <div class="person">
+    <div>Nom: <strong>{{employee.nom}}</strong></div>
+    <div>Prenom: <strong>{{employee.prenom}}</strong></div>
+    <div>Fonction: <strong>{{employee.get_function_display}}</strong></div>
+    <div>Nombre de jours de conge: <strong>{{conge.nombre}}</strong></div>
+    <div>Nature de conge: <strong>{{conge.get_nature_display}}</strong></div>
+    <div>
+      Date de depart de conge: <strong>{{conge.debut |date:"d/m/Y"}}</strong>
+    </div>
+    <div>
+      Date de retour du conge: <strong>{{conge.retour|date:"d/m/Y"}}</strong>
+    </div>
+  </div>
+</div>
+<div class="congebottom">
+  le present titre de conge est delivre a l'interesse(e) pour servir et valider
+  ce que de droit .
+</div>
+
+<div class="signature1">
+  fait a amizour, le: {{conge.created_at |date:"d/m/Y"}}
+</div>
+<div class="signature">Signature</div>
+{% endblock body %}

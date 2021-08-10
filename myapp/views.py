@@ -1,5 +1,5 @@
 from .forms import ATSFomrs, UtilisateurForms
-from .models import Employee, Utilisateur
+from .models import Conge, Employee, Utilisateur ,Paie
 from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate ,logout
@@ -9,7 +9,11 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.db.models import Q
 from itertools import chain
+from django.http import HttpResponse
+from django.views.generic import View
+from django.template.loader import get_template
 
+from .helper import render_to_pdf #created in step 4
 
 # Create your views here.
 
@@ -179,7 +183,8 @@ def ajoutatsView(request):
             nature = request.POST['nature'],
             numccp = request.POST['numccp'],
             numss = request.POST['numss']
-        )   
+        ) 
+        paie = Paie.objects.create(employee=employee) 
         form = ATSFomrs(request.POST,request.FILES,instance=employee)
         if form.is_valid():
             form.save()
@@ -234,5 +239,101 @@ def editeatsView(request,pk):
     context = {'employee':employee,'form':form}
     return render(request, 'editats.html', context)
 
-def AjoutPaie(request):
-    return render(request,'paie.html')
+def AjoutPaie(request,pk):
+    paie = Paie.objects.get(pk=pk)
+    if request.method == 'POST':
+        paie.filiere = request.POST['filiere']
+        paie.grade = request.POST['grade']
+        paie.corps = request.POST['corps']
+        paie.categorie = request.POST['categorie']
+        paie.indice = request.POST['indice']
+        paie.salaire = request.POST['salaire']
+        paie.poste_occupe = request.POST['poste_occupe']
+        paie.indiciaire = request.POST['indiciaire']
+        paie.categorie_promo = request.POST['categorie_promo']
+        paie.groupe = request.POST['groupe']
+        paie.indice_minimale = request.POST['indice_minimale']
+        paie.indice_echelon = request.POST['indice_echelon']
+        paie.echelon = request.POST['echelon']
+        paie.grille = request.POST['grille']
+        paie.indemite_sac = request.POST['indemite_sac']
+        paie.indemite_stc = request.POST['indemite_stc']
+        paie.securite = request.POST['securite']
+        paie.salaire_brut = request.POST['salaire_brut']
+        paie.indimnite_transport = request.POST['indimnite_transport']
+        paie.indimnite_panier = request.POST['indimnite_panier']
+        paie.totale_brute_imposable_irg = request.POST['totale_brute_imposable_irg']
+        paie.allocation_familiale = request.POST['allocation_familiale']
+        paie.totale = request.POST['totale']
+        paie.nombre_travaille = request.POST['nombre_travaille']
+        paie.nombre_absence = request.POST['nombre_absence']
+        paie.salaire_net = request.POST['salaire_net']
+        paie.save()
+        messages.add_message(request, messages.SUCCESS, 'Operation validé.') 
+        return redirect('/ats')
+    else : 
+        messages.add_message(request, messages.WARNING, 'Operation non validé') 
+    context = {'paie':paie}
+    return render(request,'paie.html',context)
+
+
+
+def congeView(request,pk):
+    employee = Employee.objects.get(pk=pk)
+    if request.method == "POST" : 
+        conge = Conge.objects.create(employee=employee,
+        debut = request.POST['debut'],
+        fin = request.POST['fin'],
+        nombre = request.POST['nombre'],
+        nature = request.POST['nature'],
+        retour = request.POST['retour'],
+        commentaire = request.POST['commentaire']
+        )
+        print(request.POST)
+        return redirect(f"/pdf/conge/{conge.id}")
+    context = {"employee":employee}
+    return render(request,'congeform.html',context)
+
+
+def Congepdf(request,pk):
+    template = get_template('pdf/conge.html')
+    conge = Conge.objects.get(pk=pk)
+    employee = conge.employee
+    context = {'employee':employee,"user":request.user,"conge":conge,}
+    print(request.user.prenom)
+    html = template.render(context)
+    pdf = render_to_pdf('pdf/conge.html', context)
+    if pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = f"conge/{employee.nom}&{employee.prenom}%s.pdf" %("12341231")
+        content = "inline; filename=%s" %(filename)
+        download = request.GET.get("download")
+        if download:
+            content = "attachment; filename=%s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+    return HttpResponse("Not found")
+
+
+class PDF(View):
+    def get(self, request, *args, **kwargs):
+        template = get_template('example.html')
+        context = {
+            "invoice_id": 123,
+            "customer_name": "John Cooper",
+            "amount": 1399.99,
+            "today": "Today",
+        }
+        html = template.render(context)
+        pdf = render_to_pdf('pdf/example.html', context)
+        if pdf:
+            response = HttpResponse(pdf, content_type='application/pdf')
+            filename = "example%s.pdf" %("12341231")
+            content = "inline; filename='%s'" %(filename)
+            download = request.GET.get("download")
+            if download:
+                content = "attachment; filename='%s'" %(filename)
+            response['Content-Disposition'] = content
+            return response
+        return HttpResponse("Not found")
+

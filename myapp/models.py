@@ -119,17 +119,163 @@ class Employee(models.Model):
     def __str__(self):
         return self.nom
 
+FILIERE = (
+        ('0','Filiere'),
+        ('A','Administration'),
+        ('I','Informatique'),
+    )
+
+GRADES = (
+    # default
+    ('0','Grade'),
+    # Adminitration
+    ('GA','Adimistrateur'),
+    ('GAP','Administrateur principal'),
+    ('GAC','Administrateur conseiller'),
+    ('GAA',"Attaché d'administration"),
+    ('GPA',"Attaché principale d'administration"),
+    ('AB',"Agents de bureau"),
+    ('AA',"Agent d'administration"),
+    ('APA',"Agent principale d'administration"),
+    ('AS',"Agents de saisie"),
+    ('S',"Secretaire"),
+    ("SD","Secretaire de direction"),
+    ('SPD',"Secretaire principale de direction"),
+    ('ACA',"Aide comptable administrative"),
+    ("CA","Compatble administrative"),
+    ('CAP',"Comptable administrative principale"),
+    #Informatique
+    ("IA","Ingenieur d'application"),
+    ("IE","Ingenieur d'etat"),
+    ("IP","Ingenieur principal"),
+    ("IC","Ingenieur en chef"),
+    ("T","Technicien"),
+    ("TS","Technicien superieur"),
+    ("AT","Adjoint technique"),
+    ("AST","Agent technique")
+)
+
+CORPS = (
+    # default
+    ("0","COPRS"),
+    #admnisi
+    ("A","Adminstrateurs"),
+    ("AD","Attachés d'dministrations"),
+    ("AA","Agents d'dministrations"),
+    ("S","Secretaire"),
+    ("CA","Comptables administratifs"),
+    # info
+    ("I","Ingenieurs"),
+    ("T","Techniciens"),
+    ("AT","Adjoint techniques"),
+    ("AST","Agents techniques"),
+)
+
+
+
+POSTES = (
+    ('R','Rien'),
+    ('D','Directeur'),
+    ('DA','Directeur adjoint'),
+    ('CD','Chef de departement'),
+    ('SG','Secretaire generale'),
+    ('DB','Directeur de la bibliotheque'),
+    ('SDPF','Sous directeur des personnels et de la formation'),
+    ('SDFM','Sous directeur des finances et de moyens'),
+    ('RCIA',"Responsable de centre d'impression et d'audiovisuel"),
+    ('RCSI',"Responsable de centre de systemes et reseaux d'informations"),
+    ("RHT","Responsable de hall de technologies"),
+    ("RFP","Responsable de la forme de production")
+)
+
+PROMO = (
+    ('0','0'),
+    ('1','1'),
+    ('2','2'),
+    ('3','3'),
+    ('4','4'),
+    ('5','5'),
+    ('6','6'),
+    ('7','7'),
+    ('8','8'),
+    ('9','9'),
+    ('10','10'),
+    ('11','11'),
+    ('12','12'),
+    ('13','13'),
+    ('14','14'),
+    ('15','15'),
+    ('16','16'),
+)
+
+ECHELON = (
+    ('0','0'),
+    ('1','1er'),
+    ('2','2eme'),
+    ('3','3eme'),
+    ('4','4eme'),
+    ('5','5eme'),
+    ('6','6eme'),
+    ('7','7eme'),
+    ('8','8eme'),
+    ('9','9eme'),
+    ('10','10eme'),
+    ('11','11eme'),
+    ('12','12eme'),
+)
+
+class Paie(models.Model):
+    employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    filiere = models.CharField(default='0',max_length=1,choices=FILIERE)
+    grade = models.CharField(default="0",max_length=3,choices=GRADES)
+    corps = models.CharField(default="0",max_length=3,choices=CORPS)
+    categorie = models.IntegerField(default=0)
+    indice = models.IntegerField(default=0)
+    salaire = models.FloatField(default=0.0)
+    poste_occupe = models.CharField(default='R',max_length=4,choices=POSTES)
+    indiciaire = models.FloatField(default=0.0)
+    categorie_promo = models.CharField(default="0",max_length=2,choices=PROMO)
+    groupe = models.CharField(default="None",max_length=10)
+    indice_minimale = models.FloatField(default=0.0)
+    indice_echelon = models.CharField(default="0",max_length=2,choices=ECHELON)
+    echelon = models.IntegerField(default=0)
+    grille = models.FloatField(default=0.0) 
+    indemite_sac = models.FloatField(default=0.0)   
+    indemite_stc = models.FloatField(default=0.0)
+    securite = models.FloatField(default=0.0)
+    salaire_brut = models.FloatField(default=0.0)
+    indimnite_transport = models.IntegerField(default=0)
+    indimnite_panier = models.IntegerField(default=0)
+    totale_brute_imposable_irg = models.FloatField(default=0.0)
+    irg = models.IntegerField(default=0)
+    allocation_familiale = models.IntegerField(default=0)
+    totale = models.FloatField(default=0.0)
+    nombre_travaille = models.IntegerField(default=0)
+    nombre_absence = models.IntegerField(default=0)
+    salaire_net = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return self.employee.nom
 
 
 
 
+NATUREC = (
+    ('M','Maladie'),
+    ('A','Annuel'),
+    ('E','Exceptionnel')
+)
 
+class Conge(models.Model):
+    employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    debut = models.DateField()
+    fin = models.DateField()
+    nombre = models.CharField(max_length=50)
+    nature = models.CharField(max_length=1,choices=NATUREC)
+    retour = models.DateTimeField()
+    commentaire = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    
 
-
-
-
-
-
-
-
-
+    def __str__(self):
+        return self.employee.nom
