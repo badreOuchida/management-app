@@ -1,5 +1,6 @@
+from django.core import paginator
 from .forms import ATSFomrs, UtilisateurForms
-from .models import Conge, Employee, Utilisateur ,Paie
+from .models import Conge, Employee, Prime, Utilisateur ,Paie
 from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate ,logout
@@ -12,6 +13,8 @@ from itertools import chain
 from django.http import HttpResponse
 from django.views.generic import View
 from django.template.loader import get_template
+from datetime import date
+from django.core.paginator import Paginator
 
 from .helper import render_to_pdf #created in step 4
 
@@ -41,8 +44,22 @@ def home(request):
 
 @login_required
 def UsersView(request):
-    users = Utilisateur.objects.all()
-    context = {'users':users}
+    search_post = request.GET.get('search') 
+    if search_post:
+        by_name = Utilisateur.objects.filter(Q(nom__icontains=search_post))
+        by_prenon = Utilisateur.objects.filter(Q(prenom__icontains=search_post))
+        by_func = Utilisateur.objects.filter(Q(fonction__icontains=search_post))
+        users = list(chain(by_name,by_prenon,by_func))
+    else : 
+        users = Utilisateur.objects.all()
+    num = 10
+    paginator = Paginator(users,num)
+    page_number = request.GET.get('page')
+    if page_number == None :
+        page_number = 1
+    page_obj = paginator.get_page(page_number)
+    is_paginated = (len(page_obj)==num)
+    context = {'users':page_obj,'page_number':page_number,'is_paginated':is_paginated}
     return render(request,'users.html',context)
 
 @login_required
@@ -162,8 +179,41 @@ def EmployeeView(request):
         except ObjectDoesNotExist:
             messages.add_message(request, messages.WARNING, 'Operation indesirable.') 
             return redirect('/')
-    context = {"employees":employees}
+    num = 10
+    paginator = Paginator(employees,num)
+    page_number = request.GET.get('page')
+    if page_number == None :
+        page_number = 1
+    page_obj = paginator.get_page(page_number)
+    is_paginated = (len(page_obj)==num)
+    fonctionnaire = False
+    context = {'employees':page_obj,'page_number':page_number,'is_paginated':is_paginated,'fonctionnaire':fonctionnaire}
     return render(request,"employee.html",context)
+
+def XfonctionnaireView(request):
+    search_post = request.GET.get('search') 
+    if search_post:
+        by_name = Employee.objects.filter(Q(nom__icontains=search_post),Xfonctionnair=True)
+        by_prenon = Employee.objects.filter(Q(prenom__icontains=search_post),Xfonctionnair=True)
+        by_func = Employee.objects.filter(Q(function__icontains=search_post),Xfonctionnair=True)
+        employees = list(chain(by_name,by_prenon,by_func))
+    else : 
+        try : 
+            employees = Employee.objects.filter(Xfonctionnair=True)
+        except ObjectDoesNotExist:
+            messages.add_message(request, messages.WARNING, 'Operation indesirable.') 
+            return redirect('/')
+    num = 10
+    paginator = Paginator(employees,num)
+    page_number = request.GET.get('page')
+    if page_number == None :
+        page_number = 1
+    page_obj = paginator.get_page(page_number)
+    is_paginated = (len(page_obj)==num)
+    fonctionnaire = True
+    context = {'employees':page_obj,'page_number':page_number,'is_paginated':is_paginated,'fonctionnaire':fonctionnaire}
+    return render(request,"employee.html",context)
+
 
 @login_required
 def ajoutatsView(request):
@@ -206,6 +256,16 @@ def supprimeratsView(request,pk):
     messages.add_message(request, messages.SUCCESS, 'ATS supprimé.') 
     return redirect('/ats')
 
+def suppatsView(request,pk):
+    try : 
+        employee = Employee.objects.get(pk=pk)
+    except: 
+        messages.add_message(request, messages.WARNING, 'Operation indesirable ') 
+        return redirect('/ats')
+    employee.delete()
+    messages.add_message(request, messages.SUCCESS, 'ATS supprimé defenitivement.')
+    return redirect('/ats')
+
 @login_required
 def editeatsView(request,pk):
     try : 
@@ -240,7 +300,8 @@ def editeatsView(request,pk):
     return render(request, 'editats.html', context)
 
 def AjoutPaie(request,pk):
-    paie = Paie.objects.get(pk=pk)
+    employee = Employee.objects.get(pk=pk)
+    paie = Paie.objects.get(employee=employee)
     if request.method == 'POST':
         paie.filiere = request.POST['filiere']
         paie.grade = request.POST['grade']
@@ -279,29 +340,46 @@ def AjoutPaie(request,pk):
 
 
 def congeView(request,pk):
-    employee = Employee.objects.get(pk=pk)
+    try : 
+        employee = Employee.objects.get(pk=pk,Xfonctionnair=False)
+    except ObjectDoesNotExist : 
+        messages.add_message(request, messages.WARNING, 'Operation validé.') 
+        return redirect('/ats')
     if request.method == "POST" : 
-        conge = Conge.objects.create(employee=employee,
-        debut = request.POST['debut'],
-        fin = request.POST['fin'],
-        nombre = request.POST['nombre'],
-        nature = request.POST['nature'],
-        retour = request.POST['retour'],
-        commentaire = request.POST['commentaire']
-        )
-        print(request.POST)
+        conge , created = Conge.objects.get_or_create(employee=employee)
+        conge.debut = request.POST['debut']
+        conge.fin = request.POST['fin']
+        conge.nombre = request.POST['nombre']
+        conge.nature = request.POST['nature']
+        conge.retour = request.POST['retour']
+        conge.commentaire = request.POST['commentaire']
+        conge.save()
+        print(conge)
+        messages.add_message(request, messages.SUCCESS, 'Congé ajouté.')
         return redirect(f"/pdf/conge/{conge.id}")
     context = {"employee":employee}
     return render(request,'congeform.html',context)
 
+def titreConeView(request,pk):
+    employee = Employee.objects.get(pk=pk)
+    if employee.Xfonctionnair :
+        messages.add_message(request, messages.WARNING, 'Operation non validé.') 
+        return redirect('/ats') 
+    try : 
+        conge = Conge.objects.get(employee=employee)
+        print(conge)
+    except ObjectDoesNotExist : 
+        messages.add_message(request, messages.WARNING, 'Operation non validé.') 
+        return redirect('/ats')
+    return redirect(f"/pdf/conge/{conge.id}")
 
 def Congepdf(request,pk):
-    template = get_template('pdf/conge.html')
     conge = Conge.objects.get(pk=pk)
     employee = conge.employee
+    if employee.Xfonctionnair :
+        messages.add_message(request, messages.WARNING, 'ATS dans la liste des Xfonctionnaire.')
+        return redirect('/ats')
     context = {'employee':employee,"user":request.user,"conge":conge,}
-    print(request.user.prenom)
-    html = template.render(context)
     pdf = render_to_pdf('pdf/conge.html', context)
     if pdf:
         response = HttpResponse(pdf, content_type='application/pdf')
@@ -313,6 +391,60 @@ def Congepdf(request,pk):
         response['Content-Disposition'] = content
         return response
     return HttpResponse("Not found")
+
+
+def primeRendementView(request,pk):
+    employee = Employee.objects.get(pk=pk)
+    if request.method == 'POST':
+        prime = Prime.objects.create(employee=employee,
+        note_prime = request.POST['note_prime'],
+        commentaire = request.POST['commentaire'],
+        trimestre = request.POST['trimestre'],
+        date = request.POST['date'],
+        salaire_principal = request.POST['sp'],
+        salaire_brut_mensulle = request.POST['A'],
+        salaire_brut_trimi = request.POST['B'],
+        securite_sociale = request.POST['C'],
+        base_impot = request.POST['D'],
+        irg = request.POST['E'],
+        prime_net = request.POST['H']
+        )
+        return redirect('/ats')
+    paie = employee.paie_set.all()
+    paie = paie.first()
+    sp = paie.securite
+    context = {
+        'employee':employee,
+        'sp':round(sp,2),
+        'A': 0.0,
+        'B':0.0,
+        'C':0.0,
+        'D':0.0,
+        'E':0,
+        'H':0.0,
+    }
+    return render(request,'primeRendement.html',context)
+
+
+def travaillePDF(request,pk):
+    template = get_template('pdf/attestation.html')
+    employee = Employee.objects.get(pk=pk)
+    today = date.today()
+    fdate = date.today().strftime('%d/%m/%Y')
+    context = {'employee':employee,"user":request.user ,"current":fdate }
+    html = template.render(context)
+    pdf = render_to_pdf('pdf/attestation.html', context)
+    if pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = f"attestationDeTravaille/{employee.nom}&{employee.prenom}%s.pdf" %("12341231")
+        content = "inline; filename=%s" %(filename)
+        download = request.GET.get("download")
+        if download:
+            content = "attachment; filename=%s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+    return HttpResponse("Not found")
+
 
 
 class PDF(View):

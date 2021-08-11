@@ -16,4 +16,9 @@ urlpatterns = [
     path('ajoutpaie/<int:pk>',AjoutPaie,name="ajoutpaie"),
     path('conge/<int:pk>',congeView,name="conge"),
     path('pdf/conge/<int:pk>',Congepdf,name="pdfconge"),
+    path('prime/<int:pk>',primeRendementView,name="prime"),
+    path('pdf/attestation/<int:pk>',travaillePDF,name="attestation"),
+    path('Xfonctionnaire',XfonctionnaireView,name="Xfonctionnaire"),
+    path('suppats/<int:pk>',suppatsView,name="suppats"),
+    path('titreConge/<int:pk>',titreConeView,name="titreConge")
 ]

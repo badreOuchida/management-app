@@ -1,6 +1,11 @@
 {% extends 'main.html' %} {%block title%}Espace ATS{%endblock%} {%block body%}
 <div class="container home" style="height: 100%">
   <div class="row" style="margin-left: 3px">
+    {% if fonctionnaire %}
+    <small> <a href="{% url 'ats' %}">fonctionnaire</a> </small>
+    {% else %}
+    <small> <a href="{% url 'Xfonctionnaire' %}">X-fonctionnaire</a> </small>
+    {% endif %}
     <form action="{% url 'ats' %}" method="get">
       <div class="input-group search">
         <div class="form-outline">
@@ -20,8 +25,12 @@
           <th scope="col">PRENOM</th>
           <th scope="col">FONCTION</th>
           <th scope="col">Date de rejoint</th>
+          {% if not fonctionnaire %}
           <th scope="col">SUPPRIMER</th>
           <th scope="col">MODIFIER</th>
+          {% else %}
+          <th scope="col">SUPPRIMER</th>
+          {% endif %}
         </tr>
       </thead>
       <tbody>
@@ -39,6 +48,7 @@
           <td>{{employee.prenom}}</td>
           <td>{{employee.get_function_display}}</td>
           <td>{{employee.date_joined|date:"d/m/Y"}}</td>
+          {% if not fonctionnaire %}
           <td>
             <a href="{% url 'supprimerats' employee.id %}"
               ><i class="fa fa-trash" aria-hidden="true" style="color: red"></i
@@ -49,8 +59,52 @@
               <i class="fas fa-edit" style="color: green"></i>
             </a>
           </td>
+          {% else %}
+          <td>
+            <a href="{% url 'suppats' employee.id %}">
+              <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
+            </a>
+          </td>
+          {% endif %}
         </tr>
-        {% endfor %}
+        {% endfor %} {% if is_paginated %}
+        <tr>
+          <td colspan="7" class="table">
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              {% if employees.has_previous %}
+              <div>
+                <a href="?page={{employees.previous_page_number}}">
+                  <i class="fa fa-caret-left fa-2x" aria-hidden="true"></i>
+                </a>
+              </div>
+
+              {% endif %}
+              <div>
+                <span style="background-color: #e8e5e5; border-radius: 20px"
+                  >{{page_number}}</span
+                >
+              </div>
+
+              <!--ll-->
+              {% if employees.has_next %}
+              <div>
+                <a href="?page={{employees.next_page_number}}">
+                  <i class="fa fa-caret-right fa-2x" aria-hidden="true"></i>
+                </a>
+              </div>
+
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+
+        {% endif %} {% if not fonctionnaire %}
         <tr>
           <td colspan="7" class="table-active add">
             <a href="{% url 'ajoutats' %}">
@@ -58,21 +112,27 @@
             </a>
           </td>
         </tr>
+        {% endif %}
       </tbody>
     </table>
   </div>
+  <div class="add"></div>
 </div>
 {% endblock%} {% block script %}
 <script>
-  document.querySelector(".add").onclick = () => {
-    window.location.href = "{% url 'ajoutats' %}";
-  };
-
+  document.querySelectorAll(".add").forEach((div) => {
+    div.onclick = () => {
+      window.location.href = "{% url 'ajoutats' %}";
+    };
+  });
+  var isTrue = false;
   document.querySelectorAll(".tr").forEach((row) => {
     row.onclick = () => {
-      document.querySelector(".rightbar").style.display = "flex";
-      document.querySelector(".rightbar").style.width = "300px";
-      document.querySelector(".rightbar").style.opacity = "1";
+      if (!isTrue) {
+        console.log(isTrue);
+        document.querySelector(".rightbar").className = "rightbar2";
+        isTrue = true;
+      }
       document.querySelector(".home").style.width = "70%";
       document.querySelector(".user").src = row.dataset.image;
       /* name */
@@ -80,8 +140,14 @@
         row.dataset.nom + " " + row.dataset.prenom;
       /* numero*/
       document.querySelector(".numero").innerHTML = row.dataset.numero;
-      document.querySelector(".paielink").href = "ajoutpaie/" + row.dataset.id;
-      document.querySelector(".congelink").href = "conge/" + row.dataset.id;
+      document.querySelector(".paielink").href = "/ajoutpaie/" + row.dataset.id;
+      document.querySelector(".congelink").href = "/conge/" + row.dataset.id;
+      document.querySelector(".attestationpdf").href =
+        "/pdf/attestation/" + row.dataset.id;
+      document.querySelector(".titreConge").href =
+        "/titreConge/" + row.dataset.id;
+
+      document.querySelector(".prime").href = "/prime/" + row.dataset.id;
     };
   });
 </script>

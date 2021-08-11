@@ -1,0 +1,33 @@
+{% extends 'pdf/base.html' %}
+
+<!--title-->
+
+{% block title %}prime{% endblock title %}
+<!--body-->
+{% block body %}
+<div class="titlepdf">
+  <h1>ATTESTATION DE TRAVAIL</h1>
+</div>
+<div class="congebody">
+  - Nous l'administration de l'ecole ESTIN, attestons que :
+  <div class="person">
+    <div>
+      Nom & prenom: <strong>{{employee.nom}} {{employee.prenom}} </strong>
+    </div>
+    <div>Ne(e): <strong>{{employee.naissance | date:"d/m/Y" }}</strong></div>
+    <div>Adresse: <strong>{{employee.adresse}}</strong></div>
+    <div>Numero securite-sociale: <strong>{{employee.numss}}</strong></div>
+  </div>
+</div>
+<div class="congebottom">
+  Est employe au sein de notre etablissement en qualite de :
+  <strong>{{employee.get_function_display}} du </strong>
+  <strong>{{employee.date_joined | date:"d/m/Y" }} a ce jour</strong>
+  <div>
+    - Cette attestation lui est delivre pour servir et valoir ce que le droit
+  </div>
+</div>
+
+<div class="signature1">fait a Amizour, le: {{current}}</div>
+<div class="signature">Signature</div>
+{% endblock body %}

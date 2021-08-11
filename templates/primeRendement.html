@@ -1,0 +1,195 @@
+{% extends 'main.html' %} {% block body %}
+<div class="container ajout" style="height: auto">
+  <form
+    enctype="multipart/form-data"
+    action="{% url 'ajoutats' %}"
+    method="POST"
+  >
+    {% csrf_token %}
+    <div class="banner">
+      <h1>Prime de rendement</h1>
+    </div>
+    <!-- first -->
+    <div class="row">
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          value="{{employee.nom}}"
+          name="nom"
+          required
+        />
+      </div>
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          value="{{employee.prenom}}"
+          name="prenom"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label class="form-label" id="ll" for="customRange1">Note prime</label>
+        <div class="range">
+          <input
+            type="range"
+            class="form-range"
+            value="note_prime"
+            min="1"
+            max="30"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <textarea
+          class="form-control"
+          placeholder="commentaire"
+          name="commentaire"
+          rows="3"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label class="form-label" for="customRange1">Trimestre</label>
+        <select class="form-select" name="trimestre">
+          <option selected>Trimestre</option>
+          <option value="1">1er trimestre</option>
+          <option value="2">2eme trimestre</option>
+          <option value="3">3eme trimestre</option>
+          <option value="4">4eme trimestre</option>
+        </select>
+      </div>
+      <div class="col">
+        <label class="form-label" for="customRange1">Date</label>
+        <input type="date" class="form-control" name="date" required />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Salaire principal : (en DA)</label>
+        <input
+          type="number"
+          class="form-control sp"
+          value="{{sp}}"
+          name="sp"
+          required
+        />
+      </div>
+
+      <div class="col">
+        <label class="form-label">Salaire brut msensulle : (en DA)</label>
+        <input
+          type="number"
+          class="form-control AAA"
+          value="{{A}}"
+          name="A"
+          required
+        />
+      </div>
+    </div>
+    <!--second-->
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Salaire brut trimestrielle : (en DA)</label>
+        <input
+          type="number"
+          class="form-control BBB"
+          value="{{B}}"
+          name="B"
+          required
+        />
+      </div>
+
+      <div class="col">
+        <label class="form-label">Securité Sacociale : (en DA)</label>
+        <input
+          type="number"
+          class="form-control CCC"
+          value="{{C}}"
+          name="C"
+          required
+        />
+      </div>
+    </div>
+    <!--third-->
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Base impot : (en DA)</label>
+        <input
+          type="number"
+          class="form-control D"
+          value="{{D}}"
+          name="D"
+          required
+        />
+      </div>
+
+      <div class="col">
+        <label class="form-label"
+          >Impot sur le revenu global (IRG): (en DA)</label
+        >
+        <input
+          type="number"
+          class="form-control E"
+          value="{{E}}"
+          name="E"
+          required
+        />
+      </div>
+    </div>
+
+    <!-- numcss ccp -->
+    <div class="row">
+      <div class="col">
+        <label class="form-label">Prime net : (en DA)</label>
+        <input
+          type="number"
+          class="form-control H"
+          value="{{H}}"
+          name="H"
+          required
+        />
+      </div>
+    </div>
+
+    <!--valide-->
+    <div class="row">
+      <button type="submit" class="btn btn-primary mb-3">Valider</button>
+    </div>
+  </form>
+</div>
+{% endblock %} {% block script %}
+<script>
+  document.querySelector(".form-range").onchange = () => {
+    document.querySelector("#ll").innerHTML = `Note prime (${
+      document.querySelector(".form-range").value
+    })`;
+    var not_prime = document.querySelector(".form-range").value ;
+    var sp = {{sp}} ;
+    var A = sp*parseFloat(not_prime);
+    document.querySelector('.AAA').value = A.toFixed(2);
+    var B = A*3;
+    document.querySelector('.BBB').value = B.toFixed(2);
+    var C = B*9/100;
+    document.querySelector('.CCC').value = C.toFixed(2);
+    var D = B - C;
+    document.querySelector('.D').value = D.toFixed(2);
+  };
+  document.querySelector('.E').onchange = () =>{
+    var irg = parseFloat(document.querySelector('.E').value);
+    var D = parseFloat(document.querySelector('.D').value);
+    var H = D - irg;
+    document.querySelector('.H').value = H.toFixed(2);
+  }
+</script>
+{% endblock script %}

@@ -268,14 +268,40 @@ NATUREC = (
 
 class Conge(models.Model):
     employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
-    debut = models.DateField()
-    fin = models.DateField()
-    nombre = models.CharField(max_length=50)
-    nature = models.CharField(max_length=1,choices=NATUREC)
-    retour = models.DateTimeField()
-    commentaire = models.TextField()
+    debut = models.DateField(null=True,blank=True)
+    fin = models.DateField(null=True,blank=True)
+    nombre = models.CharField(max_length=50,null=True,blank=True)
+    nature = models.CharField(null=True,blank=True,max_length=1,choices=NATUREC)
+    retour = models.DateTimeField(null=True,blank=True)
+    commentaire = models.TextField(null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
 
     def __str__(self):
         return self.employee.nom
+
+
+
+TRIMESTRE = (
+    ("1","1er trimestre"),
+    ("2","2eme trimestre"),
+    ('3','3eme trimestre'),
+    ('4',"4eme trimestre")
+)
+
+
+class Prime(models.Model):
+    employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
+    note_prime = models.IntegerField(blank=True,null=True)
+    commentaire = models.TextField(blank=True,null=True)
+    trimestre = models.IntegerField(choices=TRIMESTRE,blank=True,null=True)
+    date = models.DateField(blank=True,null=True)
+    salaire_principal = models.FloatField() 
+    salaire_brut_mensulle = models.FloatField() 
+    salaire_brut_trimi = models.FloatField() 
+    securite_sociale = models.FloatField() 
+    base_impot = models.FloatField() 
+    irg = models.FloatField() 
+    prime_net = models.FloatField() 
+    created_at = models.DateTimeField(auto_now_add=True)
+    

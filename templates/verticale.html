@@ -30,15 +30,19 @@
     <div class="p-2 bd- align-self-center pl-3">
       <h4>Gestion Personnel</h4>
     </div>
+    {% if not fonctionnaire %}
     <div class="h bd-highlight">
       <a class="paielink" href="">Gestion de paie</a>
     </div>
     <div class="h bd-highlight"><a href="">Promotion</a></div>
     <div class="h bd-highlight"><a href="">l'avancement d'echlon</a></div>
-    <div class="h bd-highlight"><a href="">Prime de rendement</a></div>
+    <div class="h bd-highlight">
+      <a class="prime" href="">Prime de rendement</a>
+    </div>
     <div class="h bd-highlight">
       <a class="congelink" href="">l'ajout de congé</a>
     </div>
+    {% endif %}
     <div class="h bd-highlight"><a href="">Historique</a></div>
   </div>
   <div class="p-2 bd-highlight"><hr /></div>
@@ -46,9 +50,18 @@
     <div class="p-2 bd- align-self-center pl-3">
       <h4>Fiche personnel</h4>
     </div>
+    {% if not fonctionnaire %}
     <div class="h bd-highlight"><a href=""> Fiche de paie </a></div>
-    <div class="h bd-highlight"><a href=""> Attestation de travail</a></div>
-    <div class="h bd-highlight"><a href=""> Titre congé </a></div>
+    {% endif %}
+
+    <div class="h bd-highlight">
+      <a class="attestationpdf" href=""> Attestation de travail</a>
+    </div>
+    {% if not fonctionnaire %}
+    <div class="h bd-highlight">
+      <a href="" class="titreConge"> Titre congé </a>
+    </div>
     <div class="h bd-highlight"><a href=""> Fiche personelle</a></div>
+    {% endif %}
   </div>
 </div>

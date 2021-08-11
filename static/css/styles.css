@@ -222,12 +222,33 @@ td {
 }
 
 .rightbar {
-  background-color: #2f3541;
   transition: 1s;
   width: 0;
   display: none;
 }
 
+@keyframes animation3 {
+  0% {
+    display: flex;
+    opacity: 0;
+    width: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    width: 300px;
+  }
+}
+
+.rightbar2 {
+  background-color: #2f3541;
+  transition: 1s;
+  width: 300px;
+  display: flex;
+  animation-name: animation3;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
 .tr {
   cursor: pointer;
 }
@@ -235,6 +256,7 @@ td {
 .user {
   width: 100px;
   border-radius: 50%;
+  height: 100px;
 }
 .h {
   padding-left: 15px;
