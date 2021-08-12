@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Conge, Employee, Paie, Utilisateur
+from .models import Conge, Employee, Paie, Prime, Utilisateur
 
 
 class UtilisateurAdmin(UserAdmin):
@@ -19,4 +19,4 @@ admin.site.register(Employee)
 admin.site.register(Paie)
 admin.site.register(Conge)
 
-
+admin.site.register(Prime)

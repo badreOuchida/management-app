@@ -1,0 +1,107 @@
+{% extends 'main.html' %} {%block title%}Espace ATS{%endblock%} {%block body%}
+<div class="container home" style="height: 100%">
+  <div class="row" style="margin-left: 3px">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">NOM</th>
+          <th scope="col">PRENOM</th>
+          <th scope="col">FONCTION</th>
+          <th scope="col">Date de rejoint</th>
+          {% if not fonctionnaire %}
+          <th scope="col">SUPPRIMER</th>
+          <th scope="col">MODIFIER</th>
+          {% else %}
+          <th scope="col">SUPPRIMER</th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for employee in employees %}
+        <tr
+          class="tr"
+          data-nom="{{employee.nom}}"
+          data-prenom="{{employee.prenom}}"
+          data-id="{{employee.id}}"
+          data-image="{{employee.image.url}}"
+          data-numero="{{employee.numero}}"
+        >
+          <td>{{employee.id}}</td>
+          <td>{{employee.nom}}</td>
+          <td>{{employee.prenom}}</td>
+          <td>{{employee.get_function_display}}</td>
+          <td>{{employee.date_joined|date:"d/m/Y"}}</td>
+          {% if not fonctionnaire %}
+          <td>
+            <a href="{% url 'supprimerats' employee.id %}"
+              ><i class="fa fa-trash" aria-hidden="true" style="color: red"></i
+            ></a>
+          </td>
+          <td>
+            <a href="{% url 'editats' employee.id %}">
+              <i class="fas fa-edit" style="color: green"></i>
+            </a>
+          </td>
+          {% else %}
+          <td>
+            <a href="{% url 'suppats' employee.id %}">
+              <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
+            </a>
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %} {% if is_paginated %}
+        <tr>
+          <td colspan="7" class="table">
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              {% if employees.has_previous %}
+              <div>
+                <a href="?page={{employees.previous_page_number}}">
+                  <i class="fa fa-caret-left fa-2x" aria-hidden="true"></i>
+                </a>
+              </div>
+
+              {% endif %}
+              <div>
+                <span style="background-color: #e8e5e5; border-radius: 20px"
+                  >{{page_number}}</span
+                >
+              </div>
+
+              <!--ll-->
+              {% if employees.has_next %}
+              <div>
+                <a href="?page={{employees.next_page_number}}">
+                  <i class="fa fa-caret-right fa-2x" aria-hidden="true"></i>
+                </a>
+              </div>
+
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+
+        {% endif %} {% if not fonctionnaire %}
+        <tr>
+          <td colspan="7" class="table-active add">
+            <a href="{% url 'ajoutats' %}">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </a>
+          </td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  <div class="add"></div>
+</div>
+{% endblock%} {% block script %}
+<script></script>
+{% endblock script %}

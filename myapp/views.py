@@ -21,11 +21,13 @@ from .helper import render_to_pdf #created in step 4
 # Create your views here.
 
 def login(request):
+    if request.user.is_authenticated:
+        return redirect('/')
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
-        print(user)
+        messages.add_message(request, messages.SUCCESS, "Soyez le bienvenue !")
         if user is not None:
             auth_login(request, user)
             return redirect('/')
@@ -303,7 +305,6 @@ def AjoutPaie(request,pk):
     employee = Employee.objects.get(pk=pk)
     paies = Paie.objects.filter(employee=employee).order_by('-created_at')
     paie = paies.first()
-    print(paie.employee.id)
     if request.method == 'POST':
         paie = Paie.objects.create(employee=employee)
         paie.filiere = request.POST['filiere']
@@ -326,6 +327,7 @@ def AjoutPaie(request,pk):
         paie.salaire_brut = request.POST['salaire_brut']
         paie.indimnite_transport = request.POST['indimnite_transport']
         paie.indimnite_panier = request.POST['indimnite_panier']
+        paie.irg = request.POST['irg']
         paie.totale_brute_imposable_irg = request.POST['totale_brute_imposable_irg']
         paie.allocation_familiale = request.POST['allocation_familiale']
         paie.totale = request.POST['totale']
@@ -472,3 +474,37 @@ def FicheDePaieView(request,pk):
         response['Content-Disposition'] = content
         return response
     return HttpResponse("Not found")
+
+def HistoriqueView(request,pk):
+    employee = Employee.objects.filter(pk=pk)
+    conges = Conge.objects.filter(employee=employee).order_by('-created_at')
+    paies = Paie.objects.filter(employee=employee).order_by('-created_at')
+    primes = Prime.objects.filter(employee=employee).order_by('-created_at')
+    num = 10
+    #conges
+    Congepaginator = Paginator(conges,num)
+    page_number = request.GET.get('page')
+    if page_number == None :
+        page_number = 1
+    congesList = Congepaginator.get_page(page_number)
+    Conge_is_paginated = (len(congesList)==num)
+    #paies
+    Paiepaginator = Paginator(paies,num)
+    page_number = request.GET.get('page')
+    if page_number == None :
+        page_number = 1
+    PaiesList = Paiepaginator.get_page(page_number)
+    Paie_is_paginated = (len(PaiesList)==num)
+    #prime 
+    Primepaginator = Paginator(primes,num)
+    page_number = request.GET.get('page')
+    if page_number == None :
+        page_number = 1
+    PrimeList = Primepaginator.get_page(page_number)
+    Prime_is_paginated = (len(PrimeList)==num)
+    context = {'paies':PaiesList,'conges':congesList,
+        'primes':PrimeList,'Prime_is_paginated':Prime_is_paginated,
+        'Paie_is_paginated':Paie_is_paginated,
+        'Conge_is_paginated':Conge_is_paginated
+        }
+    return render(request,'historique.html',context)

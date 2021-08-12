@@ -22,4 +22,5 @@ urlpatterns = [
     path('suppats/<int:pk>',suppatsView,name="suppats"),
     path('titreConge/<int:pk>',titreConeView,name="titreConge"),
     path('pdf/paie/<int:pk>',FicheDePaieView,name="FichePaie"),
+    path('historique/<int:pk>',HistoriqueView,name="historique")
 ]
