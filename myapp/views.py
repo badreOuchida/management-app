@@ -15,7 +15,7 @@ from django.views.generic import View
 from django.template.loader import get_template
 from datetime import date
 from django.core.paginator import Paginator
-
+from datetime import datetime
 from .helper import render_to_pdf #created in step 4
 
 # Create your views here.
@@ -301,8 +301,11 @@ def editeatsView(request,pk):
 
 def AjoutPaie(request,pk):
     employee = Employee.objects.get(pk=pk)
-    paie = Paie.objects.get(employee=employee)
+    paies = Paie.objects.filter(employee=employee).order_by('-created_at')
+    paie = paies.first()
+    print(paie.employee.id)
     if request.method == 'POST':
+        paie = Paie.objects.create(employee=employee)
         paie.filiere = request.POST['filiere']
         paie.grade = request.POST['grade']
         paie.corps = request.POST['corps']
@@ -346,7 +349,7 @@ def congeView(request,pk):
         messages.add_message(request, messages.WARNING, 'Operation validé.') 
         return redirect('/ats')
     if request.method == "POST" : 
-        conge , created = Conge.objects.get_or_create(employee=employee)
+        conge = Conge.objects.create(employee=employee)
         conge.debut = request.POST['debut']
         conge.fin = request.POST['fin']
         conge.nombre = request.POST['nombre']
@@ -356,7 +359,7 @@ def congeView(request,pk):
         conge.save()
         print(conge)
         messages.add_message(request, messages.SUCCESS, 'Congé ajouté.')
-        return redirect(f"/pdf/conge/{conge.id}")
+        return redirect(f"/pdf/conge/{conge.employee.id}")
     context = {"employee":employee}
     return render(request,'congeform.html',context)
 
@@ -366,20 +369,23 @@ def titreConeView(request,pk):
         messages.add_message(request, messages.WARNING, 'Operation non validé.') 
         return redirect('/ats') 
     try : 
-        conge = Conge.objects.get(employee=employee)
-        print(conge)
+        conges = Conge.objects.filter(employee=employee).order_by('-created_at')
+        conge = conges.first()
     except ObjectDoesNotExist : 
         messages.add_message(request, messages.WARNING, 'Operation non validé.') 
         return redirect('/ats')
-    return redirect(f"/pdf/conge/{conge.id}")
+    return redirect(f"/pdf/conge/{conge.employee.id}")
 
 def Congepdf(request,pk):
-    conge = Conge.objects.get(pk=pk)
+    employee = Employee.objects.get(pk=pk)
+    conges = Conge.objects.filter(employee=employee).order_by('-created_at')
+    conge = conges.first()
+    fdate = date.today().strftime('%d/%m/%Y')
     employee = conge.employee
     if employee.Xfonctionnair :
         messages.add_message(request, messages.WARNING, 'ATS dans la liste des Xfonctionnaire.')
         return redirect('/ats')
-    context = {'employee':employee,"user":request.user,"conge":conge,}
+    context = {'employee':employee,"user":request.user,"conge":conge,"current":fdate}
     pdf = render_to_pdf('pdf/conge.html', context)
     if pdf:
         response = HttpResponse(pdf, content_type='application/pdf')
@@ -410,8 +416,8 @@ def primeRendementView(request,pk):
         prime_net = request.POST['H']
         )
         return redirect('/ats')
-    paie = employee.paie_set.all()
-    paie = paie.first()
+    paies = Paie.objects.filter(employee=employee).order_by('-created_at')
+    paie = paies.first()
     sp = paie.securite
     context = {
         'employee':employee,
@@ -429,7 +435,6 @@ def primeRendementView(request,pk):
 def travaillePDF(request,pk):
     template = get_template('pdf/attestation.html')
     employee = Employee.objects.get(pk=pk)
-    today = date.today()
     fdate = date.today().strftime('%d/%m/%Y')
     context = {'employee':employee,"user":request.user ,"current":fdate }
     html = template.render(context)
@@ -445,27 +450,25 @@ def travaillePDF(request,pk):
         return response
     return HttpResponse("Not found")
 
-
-
-class PDF(View):
-    def get(self, request, *args, **kwargs):
-        template = get_template('example.html')
-        context = {
-            "invoice_id": 123,
-            "customer_name": "John Cooper",
-            "amount": 1399.99,
-            "today": "Today",
-        }
-        html = template.render(context)
-        pdf = render_to_pdf('pdf/example.html', context)
-        if pdf:
-            response = HttpResponse(pdf, content_type='application/pdf')
-            filename = "example%s.pdf" %("12341231")
-            content = "inline; filename='%s'" %(filename)
-            download = request.GET.get("download")
-            if download:
-                content = "attachment; filename='%s'" %(filename)
-            response['Content-Disposition'] = content
-            return response
-        return HttpResponse("Not found")
-
+def FicheDePaieView(request,pk):
+    employee = Employee.objects.get(pk=pk)
+    paies = Paie.objects.filter(employee=employee).order_by('-created_at')
+    paie = paies.first()
+    fdate = date.today().strftime('%d/%m/%Y')
+    currentYear = datetime.now().year
+    currentMonth = datetime.now().month
+    securite = paie.securite * 9 /100
+    totale = securite + paie.irg
+    print(currentMonth)
+    context = {"totale":round(totale, 2),"securite":round(securite,2),'employee':employee,"user":request.user ,"current":fdate,'month':currentMonth,'year':currentYear,'paie':paie }
+    pdf = render_to_pdf('pdf/paie.html', context)
+    if pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = f"FicheDePaie/{employee.nom}&{employee.prenom}%s.pdf" %("12341231")
+        content = "inline; filename=%s" %(filename)
+        download = request.GET.get("download")
+        if download:
+            content = "attachment; filename=%s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+    return HttpResponse("Not found")

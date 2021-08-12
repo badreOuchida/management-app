@@ -20,5 +20,6 @@ urlpatterns = [
     path('pdf/attestation/<int:pk>',travaillePDF,name="attestation"),
     path('Xfonctionnaire',XfonctionnaireView,name="Xfonctionnaire"),
     path('suppats/<int:pk>',suppatsView,name="suppats"),
-    path('titreConge/<int:pk>',titreConeView,name="titreConge")
+    path('titreConge/<int:pk>',titreConeView,name="titreConge"),
+    path('pdf/paie/<int:pk>',FicheDePaieView,name="FichePaie"),
 ]

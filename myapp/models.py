@@ -97,7 +97,6 @@ NATURE = (
 
 
 class Employee(models.Model):
-    
     image = models.ImageField(default="profile.jpg", null=True, blank=True)
     nom = models.CharField(max_length=30)
     prenom = models.CharField(max_length=30)
@@ -253,6 +252,7 @@ class Paie(models.Model):
     nombre_travaille = models.IntegerField(default=0)
     nombre_absence = models.IntegerField(default=0)
     salaire_net = models.FloatField(default=0.0)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.employee.nom
@@ -294,7 +294,7 @@ class Prime(models.Model):
     employee = models.ForeignKey(Employee,on_delete=models.CASCADE)
     note_prime = models.IntegerField(blank=True,null=True)
     commentaire = models.TextField(blank=True,null=True)
-    trimestre = models.IntegerField(choices=TRIMESTRE,blank=True,null=True)
+    trimestre = models.CharField(max_length=1,choices=TRIMESTRE,blank=True,null=True)
     date = models.DateField(blank=True,null=True)
     salaire_principal = models.FloatField() 
     salaire_brut_mensulle = models.FloatField() 

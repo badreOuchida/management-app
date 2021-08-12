@@ -1,6 +1,6 @@
 {% extends 'main.html' %} {% block body %}
 <div class="container ajout" style="height: auto">
-  <form enctype="multipart/form-data" action="{% url 'ajoutpaie' paie.id %}" method="POST">
+  <form enctype="multipart/form-data" action="{% url 'ajoutpaie' paie.employee.id %}" method="POST">
     {% csrf_token %}
     <div class="banner">
       <h1>Gestion de paie</h1>

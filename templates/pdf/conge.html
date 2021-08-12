@@ -2,7 +2,7 @@
 
 <!--title-->
 
-{% block title %}conge{% endblock title %}conge
+{% block title %}conge{% endblock title %}
 <!--body-->
 {% block body %}
 <div class="titlepdf">
@@ -32,7 +32,7 @@
 </div>
 
 <div class="signature1">
-  fait a Amizour, le: {{conge.created_at |date:"d/m/Y"}}
+  fait a Amizour, le: {{current}}
 </div>
 <div class="signature">Signature</div>
 {% endblock body %}
