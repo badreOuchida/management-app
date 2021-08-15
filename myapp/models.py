@@ -57,6 +57,7 @@ class Utilisateur(AbstractBaseUser):
     is_superuser = models.BooleanField(default=False)
 
 
+
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
 
@@ -95,6 +96,13 @@ NATURE = (
 )
 
 
+MOTIF = (
+    ('N','None'),
+    ('DE','Décédé'),
+    ('M','Mutation'),
+    ('DI','Dimensionné'),
+    ('R','Retraité')
+)
 
 class Employee(models.Model):
     image = models.ImageField(default="profile.jpg", null=True, blank=True)
@@ -114,7 +122,9 @@ class Employee(models.Model):
     numccp=models.IntegerField()
     numss=models.IntegerField()
     Xfonctionnair = models.BooleanField(default=False)
-
+    motif = models.CharField(default="N", choices=MOTIF,max_length=2)
+    date_supression = models.DateField(auto_now_add=True,null=True,blank=True)
+    comentaire = models.TextField(null=True,blank=True)
     def __str__(self):
         return self.nom
 

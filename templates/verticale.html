@@ -43,7 +43,9 @@
       <a class="congelink" href="">l'ajout de congé</a>
     </div>
     {% endif %}
-    <div class="h bd-highlight"><a href="">Historique</a></div>
+    <div class="h bd-highlight">
+      <a class="historique" href="">Historique</a>
+    </div>
   </div>
   <div class="p-2 bd-highlight"><hr /></div>
   <div class="d-flex flex-column p-2 bd-highlight">
@@ -54,16 +56,19 @@
     <div class="h bd-highlight">
       <a href="" class="fichePaie"> Fiche de paie </a>
     </div>
-    {% endif %}
-
     <div class="h bd-highlight">
       <a class="attestationpdf" href=""> Attestation de travail</a>
     </div>
-    {% if not fonctionnaire %}
     <div class="h bd-highlight">
       <a href="" class="titreConge"> Titre congé </a>
     </div>
     <div class="h bd-highlight"><a href=""> Fiche personelle</a></div>
+    {% endif %}
+    <!--hh-->
+    {% if fonctionnaire %}
+    <div class="h bd-highlight">
+      <a href="" class="certificat">Certificat de travail</a>
+    </div>
     {% endif %}
   </div>
 </div>

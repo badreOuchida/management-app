@@ -5,25 +5,31 @@
 {% block title %}Fiche de paie{% endblock title %}
 <!--body-->
 {% block body %}
-<div class="titlepdf" style="padding-top: 10px">
-  <h1>Bulltin de paie</h1>
+<div
+  class="titlepdf"
+  style="padding-top: 5px; padding-bottom: 0px; margin: 0px"
+>
+  <h1 style="font-size: 22px">Bulltin de paie</h1>
 </div>
 
-<div class="tt" style="width: 100%; text-align: right">
+<div
+  class="tt"
+  style="width: 100%; text-align: right; padding-top: 0px:margin:0px"
+>
   Paie : {{month}}/{{year}}
 </div>
 <div class="con">
   <div class="top">
     <table id="upp" class="border">
       <tr>
-        <td style="border: none; padding-top: 15px"></td>
-        <td class="center1" style="padding-top: 15px; width: 75%">
+        <td style="border: none"></td>
+        <td class="center1" style="padding-top: 5px; width: 75%">
           <p>Nome: <strong>{{employee.nom}}</strong></p>
         </td>
-        <td class="center2" style="padding-top: 15px; width: 75%">
+        <td class="center2" style="padding-top: 5px; width: 75%">
           <p>Prenom: <strong>{{employee.prenom}}</strong></p>
         </td>
-        <td style="border: none; padding-top: 15px"></td>
+        <td style="border: none; padding-top: 5px"></td>
       </tr>
 
       <tr>
@@ -35,49 +41,26 @@
           </p>
         </td>
         <td class="center22" style="width: 75%; padding-top: 5px">
-          <p>
-            Date de recretement:
-            <strong>{{employee.date_recretment |date:"d/m/Y"}}</strong>
-          </p>
+          <p>Mode de paiement: <strong>B.N.A</strong></p>
         </td>
         <td style="border: none; padding-top: 5px"></td>
       </tr>
 
       <tr>
         <td style="border: none; padding-top: 5px"></td>
-        <td class="center11" style="padding-top: 5px">
+        <td
+          class="center11"
+          style="padding-top: 5px; border-bottom: solid 1px #000"
+        >
           <p>Adresse: <strong>{{employee.adresse}}</strong></p>
         </td>
-        <td class="center22" style="padding-top: 5px">
+        <td
+          class="center22"
+          style="padding-top: 5px; border-bottom: solid 1px #000"
+        >
           <p>Telephone: <strong>{{employee.numero}}</strong></p>
         </td>
         <td style="border: none; padding-top: 5px"></td>
-      </tr>
-      <tr>
-        <td style="border: none; padding-bottom: 10px; padding-top: 5px"></td>
-        <td
-          class="center1"
-          style="
-            border-top: none;
-            padding-top: 5px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #000;
-            width: 75%;
-          "
-        >
-          <p>Mode de paiement: <strong>B.N.A</strong></p>
-        </td>
-        <td
-          class="center2"
-          style="
-            border-top: none;
-            padding-bottom: 10px;
-            padding-top: 5px;
-            border-bottom: 1px solid #000;
-            width: 75%;
-          "
-        ></td>
-        <td style="border: none; padding-top: 5px; padding-bottom: 10px"></td>
       </tr>
     </table>
   </div>
@@ -108,7 +91,7 @@
   </table>
 </div>
 
-<div class="fiche" style="margin-top: 20px">
+<div class="fiche" style="margin-top: 10px">
   <table id="upp" style="border: 1px solid #000">
     <thead>
       <tr>
@@ -331,25 +314,23 @@
   </table>
 </div>
 
-<div class="bottom1" style="margin-top: 20px">
+<div class="bottom1" style="margin-top: 10px">
   <table id="upp" style="border: 1px solid #000">
     <thead>
       <tr>
-        <th style="padding-top: 10px; padding-bottom: 5px">TOTALE RETENUES:</th>
-        <th style="width: 15%; padding-top: 11px; padding-bottom: 5px">
-          {{totale |floatformat:2 }}
-        </th>
+        <th style="padding-top: 5px">TOTALE RETENUES:</th>
+        <th style="width: 15%; padding-top: 5px">{{totale |floatformat:2 }}</th>
       </tr>
     </thead>
   </table>
 </div>
 
-<div class="bottom12" style="margin-top: 20px">
+<div class="bottom12" style="margin-top: 10px">
   <table id="upp" style="border: 1px solid #000">
     <thead>
       <tr>
-        <th style="padding-top: 10px; padding-bottom: 5px">SALAIRE NET:</th>
-        <th style="width: 15%; padding-top: 11px; padding-bottom: 5px">
+        <th style="padding-top: 5px">SALAIRE NET:</th>
+        <th style="width: 15%; padding-top: 5px">
           {{paie.salaire_net |floatformat:2 }}
         </th>
       </tr>
@@ -357,7 +338,9 @@
   </table>
 </div>
 
-<div class="signature1">fait a Amizour, le: {{current}}</div>
+<div class="signature1" style="padding-top: 20px">
+  fait a Amizour, le: {{current}}
+</div>
 <div class="signature">Signature</div>
 
 {% endblock body %}

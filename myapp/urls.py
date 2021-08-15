@@ -22,5 +22,9 @@ urlpatterns = [
     path('suppats/<int:pk>',suppatsView,name="suppats"),
     path('titreConge/<int:pk>',titreConeView,name="titreConge"),
     path('pdf/paie/<int:pk>',FicheDePaieView,name="FichePaie"),
-    path('historique/<int:pk>',HistoriqueView,name="historique")
+    path('historique/<int:pk>',HistoriqueView,name="historique"),
+    path('suuprimerConge/<int:pk>',suuprimerCongeView,name="suuprimerConge"),
+    path('suuprimerPrime/<int:pk>',suuprimerPrimeView,name="suuprimerPrime"),
+    path('suuprimerPaie/<int:pk>',suuprimerPaieView,name="suuprimerPaie"),
+    path('fichepersonnel/<int:pk>',FichePersonnelView,name="fichePersonnel")
 ]

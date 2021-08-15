@@ -189,7 +189,8 @@ def EmployeeView(request):
     page_obj = paginator.get_page(page_number)
     is_paginated = (len(page_obj)==num)
     fonctionnaire = False
-    context = {'employees':page_obj,'page_number':page_number,'is_paginated':is_paginated,'fonctionnaire':fonctionnaire}
+    fonctionnaireJs = 1
+    context = {'employees':page_obj,'page_number':page_number,'is_paginated':is_paginated,'fonctionnaire':fonctionnaire,'fonctionnaireJs':fonctionnaireJs}
     return render(request,"employee.html",context)
 
 def XfonctionnaireView(request):
@@ -213,7 +214,8 @@ def XfonctionnaireView(request):
     page_obj = paginator.get_page(page_number)
     is_paginated = (len(page_obj)==num)
     fonctionnaire = True
-    context = {'employees':page_obj,'page_number':page_number,'is_paginated':is_paginated,'fonctionnaire':fonctionnaire}
+    fonctionnaireJs = 0
+    context = {'employees':page_obj,'page_number':page_number,'is_paginated':is_paginated,'fonctionnaire':fonctionnaire,'fonctionnaireJs':fonctionnaireJs}
     return render(request,"employee.html",context)
 
 
@@ -253,9 +255,13 @@ def supprimeratsView(request,pk):
     except: 
         messages.add_message(request, messages.WARNING, 'Operation indesirable ') 
         return redirect('/ats')
-    employee.Xfonctionnair =True
-    employee.save()
-    messages.add_message(request, messages.SUCCESS, 'ATS supprimé.') 
+    if request.method == 'POST':
+        employee.motif = request.POST['motif']
+        employee.date_supression = request.POST['date_supression']
+        employee.comentaire = request.POST['commentaire']
+        employee.Xfonctionnair =True
+        employee.save()
+        messages.add_message(request, messages.SUCCESS, 'ATS supprimé.') 
     return redirect('/ats')
 
 def suppatsView(request,pk):
@@ -475,36 +481,78 @@ def FicheDePaieView(request,pk):
         return response
     return HttpResponse("Not found")
 
+def FichePersonnelView(request,pk):
+    employee = Employee.objects.get(pk=pk)
+    fdate = date.today().strftime('%d/%m/%Y')
+    currentYear = datetime.now().year
+    currentMonth = datetime.now().month
+    context = {"employee":employee,"user":request.user ,"current":fdate,'month':currentMonth,'year':currentYear}
+    pdf = render_to_pdf('pdf/fichepersonnel.html', context)
+    if pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = f"FichePersonnel/{employee.nom}&{employee.prenom}%s.pdf" %("12341231")
+        content = "inline; filename=%s" %(filename)
+        download = request.GET.get("download")
+        if download:
+            content = "attachment; filename=%s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+    return HttpResponse("Not found")
+    
+
 def HistoriqueView(request,pk):
-    employee = Employee.objects.filter(pk=pk)
+    employee = Employee.objects.get(pk=pk)
     conges = Conge.objects.filter(employee=employee).order_by('-created_at')
     paies = Paie.objects.filter(employee=employee).order_by('-created_at')
     primes = Prime.objects.filter(employee=employee).order_by('-created_at')
     num = 10
     #conges
     Congepaginator = Paginator(conges,num)
-    page_number = request.GET.get('page')
-    if page_number == None :
-        page_number = 1
-    congesList = Congepaginator.get_page(page_number)
+    page_number_conge = request.GET.get('page_conge')
+    if page_number_conge == None :
+        page_number_conge = 1
+    congesList = Congepaginator.get_page(page_number_conge)
     Conge_is_paginated = (len(congesList)==num)
     #paies
     Paiepaginator = Paginator(paies,num)
-    page_number = request.GET.get('page')
-    if page_number == None :
-        page_number = 1
-    PaiesList = Paiepaginator.get_page(page_number)
+    page_number_paie = request.GET.get('page_paie')
+    if page_number_paie == None :
+        page_number_paie = 1
+    PaiesList = Paiepaginator.get_page(page_number_paie)
     Paie_is_paginated = (len(PaiesList)==num)
     #prime 
     Primepaginator = Paginator(primes,num)
-    page_number = request.GET.get('page')
-    if page_number == None :
-        page_number = 1
-    PrimeList = Primepaginator.get_page(page_number)
+    page_number_prime = request.GET.get('page_prime')
+    if page_number_prime == None :
+        page_number_prime = 1
+    PrimeList = Primepaginator.get_page(page_number_prime)
     Prime_is_paginated = (len(PrimeList)==num)
-    context = {'paies':PaiesList,'conges':congesList,
-        'primes':PrimeList,'Prime_is_paginated':Prime_is_paginated,
+    context = {'paies':PaiesList,
+        'conges':congesList,
+        'primes':PrimeList,
+        'Prime_is_paginated':Prime_is_paginated,
         'Paie_is_paginated':Paie_is_paginated,
-        'Conge_is_paginated':Conge_is_paginated
+        'Conge_is_paginated':Conge_is_paginated,
+        'page_number_conge':page_number_conge,
+        'page_number_prime':page_number_prime,
+        'page_number_paie':page_number_paie
         }
     return render(request,'historique.html',context)
+
+def suuprimerCongeView(request,pk):
+    conge = Conge.objects.get(pk=pk)
+    pp = conge.employee.id
+    conge.delete()
+    return redirect(f'/historique/{pp}')
+
+def suuprimerPrimeView(request,pk):
+    prime = Prime.objects.get(pk=pk)
+    pp = prime.employee.id
+    prime.delete()
+    return redirect(f'/historique/{pp}')
+
+def suuprimerPaieView(request,pk):
+    paie = Paie.objects.get(pk=pk)
+    pp = paie.employee.id
+    paie.delete()
+    return redirect(f'/historique/{pp}')

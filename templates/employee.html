@@ -23,12 +23,15 @@
           <th scope="col">ID</th>
           <th scope="col">NOM</th>
           <th scope="col">PRENOM</th>
+          {% if not fonctionnaire %}
           <th scope="col">FONCTION</th>
           <th scope="col">Date de rejoint</th>
-          {% if not fonctionnaire %}
           <th scope="col">SUPPRIMER</th>
           <th scope="col">MODIFIER</th>
           {% else %}
+          <th scope="col">Date de suppresion</th>
+          <th scope="col">Motif</th>
+          <th scope="col">Commentaire</th>
           <th scope="col">SUPPRIMER</th>
           {% endif %}
         </tr>
@@ -46,13 +49,124 @@
           <td>{{employee.id}}</td>
           <td>{{employee.nom}}</td>
           <td>{{employee.prenom}}</td>
+          {% if not fonctionnaire %}
           <td>{{employee.get_function_display}}</td>
           <td>{{employee.date_joined|date:"d/m/Y"}}</td>
-          {% if not fonctionnaire %}
           <td>
-            <a href="{% url 'supprimerats' employee.id %}"
-              ><i class="fa fa-trash" aria-hidden="true" style="color: red"></i
-            ></a>
+            <!--models-->
+            <!-- Button trigger modal -->
+            <button
+              type="button"
+              class="btn btn"
+              data-bs-toggle="modal"
+              data-bs-target="#employeeModel{{employee.id}}"
+            >
+              <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
+            </button>
+
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="employeeModel{{employee.id}}"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div
+                class="
+                  modal-dialog modal-dialog-centered modal-dialog-scrollable
+                "
+              >
+                <form
+                  action="{% url 'supprimerats' employee.id %}"
+                  method="POST"
+                >
+                  {% csrf_token %}
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="staticBackdropLabel">
+                        Boite de la supression
+                      </h5>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <!--first-->
+                      <div class="row">
+                        <div class="col">
+                          <input
+                            type="text"
+                            class="form-control"
+                            value="{{employee.nom}}"
+                          />
+                        </div>
+                        <div class="col">
+                          <input
+                            type="text"
+                            class="form-control"
+                            value="{{employee.prenom}}"
+                          />
+                        </div>
+                      </div>
+                      <!--seconde-->
+                      <div
+                        class="row"
+                        style="margin-top: 10px; margin-bottom: 10px"
+                      >
+                        <div class="col" style="text-align: initial">
+                          <label class="form-label">Motif :</label>
+                          <select class="form-select IE" name="motif">
+                            <option selected>0</option>
+                            <option value="DE">Décedé</option>
+                            <option value="M">Mutation</option>
+                            <option value="DI">Dimensionné</option>
+                            <option value="R">Retraité</option>
+                          </select>
+                        </div>
+                        <div class="col" style="text-align: initial">
+                          <label class="form-label">Date de suppresion :</label>
+                          <input
+                            type="date"
+                            class="form-control"
+                            name="date_supression"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <!--third-->
+                      <div class="row">
+                        <div class="col">
+                          <textarea
+                            class="form-control"
+                            placeholder="commentaire"
+                            name="commentaire"
+                            rows="3"
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal"
+                      >
+                        Annuler
+                      </button>
+                      <button type="Submit" class="btn btn-danger">
+                        Confirmer
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <!--fin models-->
           </td>
           <td>
             <a href="{% url 'editats' employee.id %}">
@@ -60,10 +174,60 @@
             </a>
           </td>
           {% else %}
+          <td>{{employee.date_supression | date:"d/m/Y"}}</td>
+          <td>{{employee.get_motif_display}}</td>
+          <td>{{employee.comentaire}}</td>
           <td>
-            <a href="{% url 'suppats' employee.id %}">
+            <!--start model-->
+            <button
+              type="button"
+              class="btn btn"
+              data-bs-toggle="modal"
+              data-bs-target="#employeeModel{{employee.id}}"
+            >
               <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
-            </a>
+            </button>
+
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="employeeModel{{employee.id}}"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                      Confirmation de la supression
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Annuler
+                    </button>
+                    <a
+                      href="{% url 'suppats' employee.id %}"
+                      class="btn btn-danger"
+                    >
+                      Confirmer
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--end-->
           </td>
           {% endif %}
         </tr>
@@ -139,16 +303,23 @@
       document.querySelector(".nom").innerHTML =
         row.dataset.nom + " " + row.dataset.prenom;
       /* numero*/
-      document.querySelector(".numero").innerHTML = row.dataset.numero;
-      document.querySelector(".paielink").href = "/ajoutpaie/" + row.dataset.id;
-      document.querySelector(".congelink").href = "/conge/" + row.dataset.id;
-      document.querySelector(".attestationpdf").href =
-        "/pdf/attestation/" + row.dataset.id;
-      document.querySelector(".titreConge").href =
-        "/titreConge/" + row.dataset.id;
+      if ({{fonctionnaireJs}}) {
+        document.querySelector(".paielink").href =
+          "/ajoutpaie/" + row.dataset.id;
+        document.querySelector(".congelink").href = "/conge/" + row.dataset.id;
+        document.querySelector(".attestationpdf").href =
+          "/pdf/attestation/" + row.dataset.id;
+        document.querySelector(".titreConge").href =
+          "/titreConge/" + row.dataset.id;
 
-      document.querySelector(".prime").href = "/prime/" + row.dataset.id;
-      document.querySelector(".fichePaie").href = "/pdf/paie/" + row.dataset.id;
+        document.querySelector(".prime").href = "/prime/" + row.dataset.id;
+        document.querySelector(".fichePaie").href =
+          "/pdf/paie/" + row.dataset.id;
+      }
+      document.querySelector(".numero").innerHTML = row.dataset.numero;
+
+      document.querySelector(".historique").href =
+        "historique/" + row.dataset.id;
     };
   });
 </script>

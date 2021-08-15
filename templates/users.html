@@ -33,9 +33,55 @@
           <td>{{user.get_fonction_display}}</td>
           <td>{{user.numero}}</td>
           <td>
-            <a href="{% url 'supprimer' user.id %}"
-              ><i class="fa fa-trash" aria-hidden="true" style="color: red"></i
-            ></a>
+            <!-- Button trigger modal -->
+            <button
+              type="button"
+              class="btn btn"
+              data-bs-toggle="modal"
+              data-bs-target="#users{{user.id}}"
+            >
+              <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
+            </button>
+
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="users{{user.id}}"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Confirmer la supression
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Annuler
+                    </button>
+                    <a
+                      href="{% url 'supprimer' user.id %}"
+                      class="btn btn-danger"
+                    >
+                      Confirmer
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </td>
           <td>
             <a href="{% url 'edite' user.id %}">

@@ -325,3 +325,22 @@ td {
   color: rgb(206, 203, 203);
   transition: 0.2s;
 }
+
+.paietable,
+.primetable,
+.congetable {
+  display: none;
+}
+
+.paie,
+.conge,
+.pppp {
+  cursor: pointer;
+}
+
+.paie,
+.conge,
+.pppp :hover {
+  transform: scale(1.1);
+  transition: 0.5s;
+}

@@ -1,59 +1,124 @@
-{% extends 'main.html' %} {%block title%}Espace ATS{%endblock%} {%block body%}
-<div class="container home" style="height: 100%">
-  <div class="row" style="margin-left: 3px">
-    <table class="table">
+{% extends 'main.html' %} {%block title%}Historique{%endblock%} {%block body%}
+<!--conge-->
+<div
+  class="container historique"
+  style="
+    height: 100%;
+    flex-direction: column;
+    margin-top: 5rem;
+    margin-bottom: 3rem;
+  "
+>
+  <div class="row" style="margin-bottom: 20px">
+    <div class="col" style="text-align: center">
+      <img
+        src="https://www.algodesign.com/wp-content/uploads/2015/09/logiciel-paie.png.png"
+        alt="paie"
+        style="height: 200px"
+        class="paie"
+      />
+    </div>
+    <div class="col" style="text-align: center">
+      <img
+        src="https://cdn.iconscout.com/icon/premium/png-256-thumb/bonus-2700926-2239062.png"
+        alt="prime"
+        class="pppp"
+        style="height: 200px"
+      />
+    </div>
+    <div class="col" style="text-align: center">
+      <img
+        src="https://image.flaticon.com/icons/png/512/425/425868.png"
+        alt="conge"
+        style="height: 200px"
+        class="conge"
+      />
+    </div>
+  </div>
+
+  <div class="row congetable" style="margin-left: 3px">
+    <table class="table table-dark table-striped">
       <thead>
         <tr>
-          <th scope="col">ID</th>
-          <th scope="col">NOM</th>
-          <th scope="col">PRENOM</th>
-          <th scope="col">FONCTION</th>
-          <th scope="col">Date de rejoint</th>
-          {% if not fonctionnaire %}
-          <th scope="col">SUPPRIMER</th>
-          <th scope="col">MODIFIER</th>
-          {% else %}
-          <th scope="col">SUPPRIMER</th>
-          {% endif %}
+          <th scope="col">id</th>
+          <th scope="col">Fonctin</th>
+          <th scope="col">Nombre de jours</th>
+          <th scope="col">Nature de congé</th>
+          <th scope="col">date debut</th>
+          <th scope="col">date fin</th>
+          <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
-        {% for employee in employees %}
-        <tr
-          class="tr"
-          data-nom="{{employee.nom}}"
-          data-prenom="{{employee.prenom}}"
-          data-id="{{employee.id}}"
-          data-image="{{employee.image.url}}"
-          data-numero="{{employee.numero}}"
-        >
-          <td>{{employee.id}}</td>
-          <td>{{employee.nom}}</td>
-          <td>{{employee.prenom}}</td>
-          <td>{{employee.get_function_display}}</td>
-          <td>{{employee.date_joined|date:"d/m/Y"}}</td>
-          {% if not fonctionnaire %}
-          <td>
-            <a href="{% url 'supprimerats' employee.id %}"
-              ><i class="fa fa-trash" aria-hidden="true" style="color: red"></i
-            ></a>
-          </td>
-          <td>
-            <a href="{% url 'editats' employee.id %}">
-              <i class="fas fa-edit" style="color: green"></i>
-            </a>
-          </td>
-          {% else %}
-          <td>
-            <a href="{% url 'suppats' employee.id %}">
-              <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
-            </a>
-          </td>
-          {% endif %}
-        </tr>
-        {% endfor %} {% if is_paginated %}
+        {% for conge in conges %}
         <tr>
-          <td colspan="7" class="table">
+          <td>{{conge.id}}</td>
+          <td>{{conge.employee.get_function_display}}</td>
+          <td>{{conge.nombre}}</td>
+          <td>{{conge.get_nature_display}}</td>
+          <td>{{conge.debut |date:"d/m/Y"}}</td>
+          <td>{{conge.fin |date:"d/m/Y"}}</td>
+          <td>
+            <!-- Button trigger modal -->
+            <button
+              type="button"
+              class="btn btn"
+              data-bs-toggle="modal"
+              data-bs-target="#modelConge1{{conge.id}}"
+            >
+              <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
+            </button>
+
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="modelConge1{{conge.id}}"
+              tabindex="-1"
+              aria-labelledby="staticBackdropLabel"
+            >
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5
+                      class="modal-title"
+                      id="staticBackdropLabel"
+                      style="color: black"
+                    >
+                      Confirmer la supression !
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Annuler
+                    </button>
+                    <a
+                      href="{% url 'suuprimerConge' conge.id %}"
+                      class="btn btn-primary"
+                    >
+                      Confirmer
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--fin model-->
+          </td>
+        </tr>
+        {%endfor%}
+        <!---->
+        {% if Conge_is_paginated %}
+        <tr>
+          <td colspan="7" class="table table-dark">
             <div
               style="
                 display: flex;
@@ -61,24 +126,24 @@
                 align-items: center;
               "
             >
-              {% if employees.has_previous %}
+              {% if conges.has_previous %}
               <div>
-                <a href="?page={{employees.previous_page_number}}">
+                <a href="?page_conge={{conges.previous_page_number}}">
                   <i class="fa fa-caret-left fa-2x" aria-hidden="true"></i>
                 </a>
               </div>
 
               {% endif %}
               <div>
-                <span style="background-color: #e8e5e5; border-radius: 20px"
-                  >{{page_number}}</span
+                <span style="background-color: #474848; border-radius: 20px"
+                  >{{page_number_conge}}</span
                 >
               </div>
 
               <!--ll-->
-              {% if employees.has_next %}
+              {% if conges.has_next %}
               <div>
-                <a href="?page={{employees.next_page_number}}">
+                <a href="?page_conge={{conges.next_page_number}}">
                   <i class="fa fa-caret-right fa-2x" aria-hidden="true"></i>
                 </a>
               </div>
@@ -88,20 +153,303 @@
           </td>
         </tr>
 
-        {% endif %} {% if not fonctionnaire %}
-        <tr>
-          <td colspan="7" class="table-active add">
-            <a href="{% url 'ajoutats' %}">
-              <i class="fa fa-plus" aria-hidden="true"></i>
-            </a>
-          </td>
-        </tr>
         {% endif %}
       </tbody>
     </table>
   </div>
-  <div class="add"></div>
+
+  <!--modal-->
+
+  <!--Prime-->
+
+  <div class="row primetable" style="margin-left: 3px">
+    <table class="table table-success table-striped">
+      <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">Date</th>
+          <th scope="col">Note prime</th>
+          <th scope="col">Trimestre</th>
+          <th scope="col">SP</th>
+          <th scope="col">S.B.M</th>
+          <th scope="col">S.B.T</th>
+          <th scope="col">B.I</th>
+          <th scope="col">Primer Net</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for prime in primes %}
+        <tr>
+          <td>{{prime.id}}</td>
+          <td>{{prime.date | date:"d/m/Y" }}</td>
+          <td>{{prime.note_prime}}</td>
+          <td>{{prime.get_trimestre_display}}</td>
+          <td>{{prime.salaire_principal}}</td>
+          <td>{{prime.salaire_brut_mensulle}}</td>
+          <td>{{prime.salaire_brut_trimi}}</td>
+          <td>{{prime.base_impot}}</td>
+          <td>{{prime.prime_net}}</td>
+          <td>
+            <button
+              type="button"
+              class="btn btn"
+              data-bs-toggle="modal"
+              data-bs-target="#modelPrime{{prime.id}}"
+            >
+              <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
+            </button>
+            <!--model-->
+            <div
+              class="modal fade"
+              id="modelPrime{{prime.id}}"
+              data-bs-backdrop="static"
+              data-bs-keyboard="false"
+              tabindex="-1"
+              aria-labelledby="staticBackdropLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                      Confirmer la supression !
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Supprimer
+                    </button>
+                    <a
+                      href="{% url 'suuprimerPrime' prime.id %}"
+                      class="btn btn-primary"
+                      >Confirmer</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--fin model-->
+          </td>
+        </tr>
+        {%endfor%}
+        <!---->
+        {% if Prime_is_paginated %}
+        <tr>
+          <td colspan="10" class="table table-success">
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              {% if primes.has_previous %}
+              <div>
+                <a href="?page_prime={{primes.previous_page_number}}">
+                  <i class="fa fa-caret-left fa-2x" aria-hidden="true"></i>
+                </a>
+              </div>
+
+              {% endif %}
+              <div>
+                <span style="background-color: #d7dcda; border-radius: 20px"
+                  >{{page_number_prime}}</span
+                >
+              </div>
+
+              <!--ll-->
+              {% if primes.has_next %}
+              <div>
+                <a href="?page_prime={{primes.next_page_number}}">
+                  <i class="fa fa-caret-right fa-2x" aria-hidden="true"></i>
+                </a>
+              </div>
+
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  <!--model-->
+
+  <!--paie-->
+  <div class="row paietable" style="margin-left: 3px">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">Date d'ajout</th>
+          <th scope="col">Filiere</th>
+          <th scope="col">Corps</th>
+          <th scope="col">Grade</th>
+          <th scope="col">S.Base</th>
+          <th scope="col">Salaire brut imposable</th>
+          <th scope="col">Salaire net</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for paie in paies %}
+        <tr>
+          <td>{{paie.id}}</td>
+          <td>{{paie.created_at | date:"d/m/Y" }}</td>
+          <td>{{paie.get_filiere_display}}</td>
+          <td>{{paie.get_corps_display}}</td>
+          <td>{{paie.get_grade_display}}</td>
+          <td>{{paie.salaire}}</td>
+          <td>{{paie.salaire_brut}}</td>
+          <td>{{paie.salaire_net}}</td>
+          <td>
+            <button
+              type="button"
+              class="btn btn"
+              data-bs-toggle="modal"
+              data-bs-target="#modelPaie{{paie.id}}"
+            >
+              <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
+            </button>
+            <!--model-->
+            <div
+              class="modal fade"
+              id="modelPaie{{paie.id}}"
+              data-bs-backdrop="static"
+              data-bs-keyboard="false"
+              tabindex="-1"
+              aria-labelledby="staticBackdropLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">
+                      Confirmer la suppresion
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      supprimer
+                    </button>
+                    <a
+                      href="{% url 'suuprimerPaie' paie.id %}"
+                      class="btn btn-primary"
+                      >Supprimer</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!--fin modl-->
+          </td>
+        </tr>
+        {%endfor%}
+        <!---->
+        {% if Paie_is_paginated %}
+        <tr>
+          <td colspan="9" class="table">
+            <div
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              "
+            >
+              {% if paies.has_previous %}
+              <div>
+                <a href="?page_paie={{paies.previous_page_number}}">
+                  <i class="fa fa-caret-left fa-2x" aria-hidden="true"></i>
+                </a>
+              </div>
+
+              {% endif %}
+              <div>
+                <span style="background-color: #e8e5e5; border-radius: 20px"
+                  >{{page_number_paie}}</span
+                >
+              </div>
+
+              <!--ll-->
+              {% if paies.has_next %}
+              <div>
+                <a href="?page_paie={{paies.next_page_number}}">
+                  <i class="fa fa-caret-right fa-2x" aria-hidden="true"></i>
+                </a>
+              </div>
+
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+  <!--model-->
+  <!-- Button trigger modal -->
+
+  <!-- Modal -->
 </div>
+
 {% endblock%} {% block script %}
-<script></script>
+<script>
+  var paieTable = document.querySelector(".paietable");
+  var primeTable = document.querySelector(".primetable");
+  var congeTable = document.querySelector(".congetable");
+  document.querySelector(".paie").onclick = () => {
+    paieTable.style.display = "block";
+    primeTable.style.display = "none";
+    congeTable.style.display = "none";
+  };
+  document.querySelector(".conge").onclick = () => {
+    paieTable.style.display = "none";
+    primeTable.style.display = "none";
+    congeTable.style.display = "block";
+  };
+  document.querySelector(".pppp").onclick = () => {
+    console.log("yes");
+    paieTable.style.display = "none";
+    primeTable.style.display = "block";
+    congeTable.style.display = "none";
+  };
+  if({{page_number_conge}} > 1){
+    congeTable.style.display="block";
+    paieTable.style.display="none";
+    primeTable.style.display="none";
+  }
+  if({{page_number_prime}} > 1){
+    congeTable.style.display="none";
+    paieTable.style.display="none";
+    primeTable.style.display="block";
+  }
+  if({{page_number_paie}} > 1){
+    congeTable.style.display="none";
+    paieTable.style.display="block";
+    primeTable.style.display="none";
+  }
+</script>
 {% endblock script %}
