@@ -17,6 +17,7 @@ from datetime import date
 from django.core.paginator import Paginator
 from datetime import datetime
 from .helper import render_to_pdf #created in step 4
+from .decorators import OnlySuperUser
 
 # Create your views here.
 
@@ -42,8 +43,10 @@ def Logout(request):
 
 @login_required
 def home(request):
+    print(request.user.has_perm())
     return render(request,'home.html')
 
+@OnlySuperUser
 @login_required
 def UsersView(request):
     search_post = request.GET.get('search') 
@@ -64,6 +67,7 @@ def UsersView(request):
     context = {'users':page_obj,'page_number':page_number,'is_paginated':is_paginated}
     return render(request,'users.html',context)
 
+@OnlySuperUser
 @login_required
 def SuprimerUser(request,pk):
     try :
@@ -75,6 +79,7 @@ def SuprimerUser(request,pk):
     messages.add_message(request, messages.SUCCESS, 'Utilisateurs a etait supprimé.')
     return redirect('/utilisateurs')
 
+@OnlySuperUser
 @login_required
 def EditeUser(request,pk):
     try:
@@ -120,6 +125,7 @@ def EditeUser(request,pk):
 
 
 
+@OnlySuperUser
 @login_required
 def AjoutUtilisateurs(request):
     form = UtilisateurForms()
@@ -556,3 +562,20 @@ def suuprimerPaieView(request,pk):
     pp = paie.employee.id
     paie.delete()
     return redirect(f'/historique/{pp}')
+
+
+def CertficatTravail(request,pk):
+    employee = Employee.objects.get(pk=pk)
+    fdate = date.today().strftime('%d/%m/%Y')
+    context = {"employee":employee,"user":request.user ,"current":fdate}
+    pdf = render_to_pdf('pdf/certificattravail.html', context)
+    if pdf:
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = f"certificatTravail/{employee.nom}&{employee.prenom}%s.pdf" %("12341231")
+        content = "inline; filename=%s" %(filename)
+        download = request.GET.get("download")
+        if download:
+            content = "attachment; filename=%s" %(filename)
+        response['Content-Disposition'] = content
+        return response
+    return HttpResponse("Not found")

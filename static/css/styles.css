@@ -91,13 +91,13 @@ footer {
   width: 100%;
 }
 
-.home .col-6 {
+.home .col {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.home .col-6 div {
+.home .col div {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -107,16 +107,16 @@ footer {
   animation-fill-mode: forwards;
 }
 
-.home .col-6 a {
+.home .col a {
   color: #000;
 }
 
-.home .col-6 div img {
+.home .col div img {
   width: 256px;
   height: 256px;
 }
 
-.home .col-6 div :hover {
+.home .col div :hover {
   transform: scale(1.1);
   transition: 0.5s;
 }

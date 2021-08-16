@@ -37,7 +37,7 @@ class MyAccountManager(BaseUserManager):
 
 
 FONCTION = (
-	('A','ADMIN'),
+	('A','SOUS DIRECTEUR PERSONNEL'),
 	('C','CHEF ATS')
 )
 
@@ -67,7 +67,7 @@ class Utilisateur(AbstractBaseUser):
 	    return self.username
 
 	# For checking permissions. to keep it simple all admin have ALL permissons
-    def has_perm(self, perm, obj=None):
+    def has_perm(self, obj=None):
 	    return self.is_admin
 
 	# Does this user have permission to view this app? (ALWAYS YES FOR SIMPLICITY)

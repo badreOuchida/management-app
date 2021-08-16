@@ -1,0 +1,44 @@
+{% extends 'pdf/base.html' %}
+
+<!--title-->
+
+{% block title %}conge{% endblock title %}
+<!--body-->
+{% block body %}
+<div class="titlepdf">
+  <h1>Certificat de travail</h1>
+</div>
+<div style="margin-left: 10px; margin-top: 5px">
+  Nous, l'administration de l'ecole ESTIN, certifions que :
+</div>
+<div style="margin-left: 22px; margin-top: 5px">
+  NOM & PRENOM : <strong>{{employee.nom}} {{employee.prenom}}</strong>
+</div>
+<div style="margin-left: 22px">
+  Ne(e) le : <strong>{{employee.naissance | date:'d/m/Y'}}</strong>
+</div>
+<div style="margin-left: 22px">
+  Adresse : <strong>{{employee.adresse}}</strong>
+</div>
+<div style="margin-left: 22px">
+  Numero SEC.Sociale : <strong>{{employee.numss}}</strong>
+</div>
+
+<div style="margin-left: 10px; margin-top: 5px">
+  A ete employe au sein de notre etablissement en qualite de
+  {{employee.get_function_display}} du {{employee.date_joined | date:"d/m/Y"}}
+  au {{employee.date_supression | date:"d/m/Y"}}.
+</div>
+
+<div style="margin-left: 10px; margin-top: 5px">
+  il (Elle) nous a quitte(e) libre de tout engagement .
+</div>
+
+<div style="margin-left: 10px; margin-top: 5px">
+  Le present certificat lui est delivre pour servir et valoir ce que de droit
+</div>
+
+<div class="signature1">fait a Amizour, le: {{current}}</div>
+<div class="signature">Signature</div>
+
+{% endblock body %}

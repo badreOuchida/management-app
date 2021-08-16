@@ -1,7 +1,8 @@
 {% extends 'main.html' %} {%block title%}Home{%endblock%} {%block body %}
 <div class="container home">
   <div class="row">
-    <div class="col-6">
+    {% if request.user.has_perm %}
+    <div class="col">
       <a href="{% url 'users' %}">
         <div>
           <img
@@ -12,7 +13,8 @@
         </div>
       </a>
     </div>
-    <div class="col-6">
+    {% endif %}
+    <div class="col">
       <a href="{% url 'ats' %}">
         <div>
           <img
