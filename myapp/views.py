@@ -57,7 +57,7 @@ def UsersView(request):
         users = list(chain(by_name,by_prenon,by_func))
     else : 
         users = Utilisateur.objects.all()
-    num = 10
+    num = 5
     paginator = Paginator(users,num)
     page_number = request.GET.get('page')
     if page_number == None :
@@ -187,7 +187,7 @@ def EmployeeView(request):
         except ObjectDoesNotExist:
             messages.add_message(request, messages.WARNING, 'Operation indesirable.') 
             return redirect('/')
-    num = 10
+    num = 5
     paginator = Paginator(employees,num)
     page_number = request.GET.get('page')
     if page_number == None :
@@ -278,7 +278,7 @@ def suppatsView(request,pk):
         return redirect('/ats')
     employee.delete()
     messages.add_message(request, messages.SUCCESS, 'ATS supprimé defenitivement.')
-    return redirect('/ats')
+    return redirect('/Xfonctionnaire')
 
 @login_required
 def editeatsView(request,pk):
@@ -511,7 +511,7 @@ def HistoriqueView(request,pk):
     conges = Conge.objects.filter(employee=employee).order_by('-created_at')
     paies = Paie.objects.filter(employee=employee).order_by('-created_at')
     primes = Prime.objects.filter(employee=employee).order_by('-created_at')
-    num = 10
+    num = 5
     #conges
     Congepaginator = Paginator(conges,num)
     page_number_conge = request.GET.get('page_conge')

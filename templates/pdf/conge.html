@@ -19,7 +19,8 @@
     <div>Nombre de jours de conge: <strong>{{conge.nombre}}</strong></div>
     <div>Nature de conge: <strong>{{conge.get_nature_display}}</strong></div>
     <div>
-      Date de depart de conge: <strong>{{conge.debut |date:"d/m/Y"}} au <strong>{{conge.fin |date:"d/m/Y"}}</strong>
+      Date de depart de conge: <strong>{{conge.debut |date:"d/m/Y"}}</strong> au
+      <strong>{{conge.fin |date:"d/m/Y"}}</strong>
     </div>
     <div>
       Date de retour du conge: <strong>{{conge.retour|date:"d/m/Y"}}</strong>
@@ -31,8 +32,6 @@
   ce que de droit .
 </div>
 
-<div class="signature1">
-  fait a Amizour, le: {{current}}
-</div>
+<div class="signature1">fait a Amizour, le: {{current}}</div>
 <div class="signature">Signature</div>
 {% endblock body %}

@@ -26,6 +26,6 @@ urlpatterns = [
     path('suuprimerConge/<int:pk>',suuprimerCongeView,name="suuprimerConge"),
     path('suuprimerPrime/<int:pk>',suuprimerPrimeView,name="suuprimerPrime"),
     path('suuprimerPaie/<int:pk>',suuprimerPaieView,name="suuprimerPaie"),
-    path('fichepersonnel/<int:pk>',FichePersonnelView,name="fichePersonnel"),
-    path('certificatTravail/<int:pk>',CertficatTravail,name="certificat")
+    path('pdf/fichepersonnel/<int:pk>',FichePersonnelView,name="fichePersonnel"),
+    path('pdf/certificatTravail/<int:pk>',CertficatTravail,name="certificat")
 ]

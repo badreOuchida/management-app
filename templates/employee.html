@@ -2,9 +2,15 @@
 <div class="container home" style="height: 100%">
   <div class="row" style="margin-left: 3px">
     {% if fonctionnaire %}
-    <small> <a href="{% url 'ats' %}">fonctionnaire</a> </small>
+    <small>
+      <a href="{% url 'ats' %}" class="btn btn-primary">fonctionnaire</a>
+    </small>
     {% else %}
-    <small> <a href="{% url 'Xfonctionnaire' %}">X-fonctionnaire</a> </small>
+    <small>
+      <a href="{% url 'Xfonctionnaire' %}" class="btn btn-primary"
+        >X-fonctionnaire</a
+      >
+    </small>
     {% endif %}
     <form action="{% url 'ats' %}" method="get">
       <div class="input-group search">
@@ -315,6 +321,9 @@
         document.querySelector(".prime").href = "/prime/" + row.dataset.id;
         document.querySelector(".fichePaie").href =
           "/pdf/paie/" + row.dataset.id;
+        document.querySelector('.fichePersonnel').href = "pdf/fichepersonnel/"+row.dataset.id
+      }else{
+        document.querySelector('.certificatTravail').href = "pdf/certificatTravail/"+row.dataset.id
       }
       document.querySelector(".numero").innerHTML = row.dataset.numero;
 
