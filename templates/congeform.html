@@ -113,8 +113,23 @@
     </div>
 
     <!--valide-->
-    <div class="row">
-      <button type="submit" class="btn btn-primary mb-3">Valider</button>
+    <div
+      class="row"
+      style="display: flex; justify-content: center; aligntu-items: center"
+    >
+      <a
+        style="width: auto"
+        href="{% url 'ats' %}"
+        class="btn btn-danger mb-3 mx-2"
+        >Annuler</a
+      >
+      <button
+        style="width: auto"
+        type="submit"
+        class="btn btn-primary mb-3 mx-2"
+      >
+        Valider
+      </button>
     </div>
   </form>
 </div>

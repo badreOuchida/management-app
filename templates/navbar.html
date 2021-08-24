@@ -30,10 +30,31 @@
             ><i class="far fa-user"></i> Bonjour, {{request.user}}</a
           >
         </li>
-        <li class="nav-item mx-2">
-          <a class="nav-link" href="{% url 'logout' %}"
-            ><i class="fas fa-sign-out-alt"></i> Se deconnecter</a
+        <li class="nav-item dropdown btn-group dropstart">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            id="navbarDarkDropdownMenuLink"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
           >
+          </a>
+          <ul
+            class="dropdown-menu dropdown-menu-dark"
+            aria-labelledby="navbarDarkDropdownMenuLink"
+          >
+            <li>
+              <a class="dropdown-item" href="{% url 'edite' request.user.id %}"
+                >Modifier compte</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'logout' %}"
+                >Se deconnecter</a
+              >
+            </li>
+          </ul>
         </li>
       </ul>
     </div>

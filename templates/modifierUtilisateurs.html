@@ -69,8 +69,8 @@
       </div>
       <div class="col">
         <select class="form-select" name="fonction">
-          <option value="A" {% if user.nature == 'A' %}selected{% endif %}>ADMIN</option>
-          <option value="C" {% if user.nature == 'C' %}selected{% endif %}>CHEF ATS</option>
+          <option value="A" {% if user.fonction == 'A' %}selected{% endif %}>ADMIN</option>
+          <option value="C" {% if user.fonction == 'C' %}selected{% endif %}>CHEF ATS</option>
         </select>
       </div>
     </div>
@@ -105,8 +105,23 @@
       <div class="hh">Modifier mot de passe</div>
     </div>
     <!--valide-->
-    <div class="row b">
-      <button type="submit" class="btn btn-primary mb-3">Valider</button>
+    <div
+      class="row b"
+      style="display: flex; justify-content: center; aligntu-items: center"
+    >
+      <a
+        style="width: auto"
+        href="{% url 'users' %}"
+        class="btn btn-danger mb-3 mx-2"
+        >Annuler</a
+      >
+      <button
+        style="width: auto"
+        type="submit"
+        class="btn btn-primary mb-3 mx-2"
+      >
+        Valider
+      </button>
     </div>
   </form>
 </div>

@@ -104,6 +104,22 @@ MOTIF = (
     ('R','Retraité')
 )
 
+DECISION = (
+    ('N','None'),
+    ('A','Automatique'),
+    ('C','Commission')
+)
+
+ALERT = (
+    ('0','0'),
+    ('1',"1 an"),
+    ('2','2 ans'),
+    ('3','3 ans'),
+    ('4','4 ans'),
+    ('5','5 ans'),
+    ('6','6 ans'),
+)
+
 class Employee(models.Model):
     image = models.ImageField(default="profile.jpg", null=True, blank=True)
     nom = models.CharField(max_length=30)
@@ -125,6 +141,15 @@ class Employee(models.Model):
     motif = models.CharField(default="N", choices=MOTIF,max_length=2)
     date_supression = models.DateField(auto_now_add=True,null=True,blank=True)
     comentaire = models.TextField(null=True,blank=True)
+    date_effet = models.DateField(blank=True,null=True)
+    cheked = models.BooleanField(default=False)
+    is_greater_than_2 = models.BooleanField(default=False)
+    is_greater_than_10 = models.BooleanField(default=False)
+    decision = models.CharField(default="N",max_length=1,choices=DECISION) 
+    color = models.CharField(max_length=10,null=True,blank=True)
+    checked = models.BooleanField(default=False)
+    date = models.DateField(blank=True,null=True)
+    alerte = models.CharField(default="0", max_length=1,choices=ALERT)
     def __str__(self):
         return self.nom
 

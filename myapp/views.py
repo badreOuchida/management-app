@@ -13,11 +13,11 @@ from itertools import chain
 from django.http import HttpResponse
 from django.views.generic import View
 from django.template.loader import get_template
-from datetime import date
+from datetime import date , datetime
 from django.core.paginator import Paginator
-from datetime import datetime
 from .helper import render_to_pdf #created in step 4
 from .decorators import OnlySuperUser
+from dateutil import relativedelta
 
 # Create your views here.
 
@@ -57,6 +57,7 @@ def UsersView(request):
         users = list(chain(by_name,by_prenon,by_func))
     else : 
         users = Utilisateur.objects.all()
+    
     num = 5
     paginator = Paginator(users,num)
     page_number = request.GET.get('page')
@@ -79,7 +80,6 @@ def SuprimerUser(request,pk):
     messages.add_message(request, messages.SUCCESS, 'Utilisateurs a etait supprimé.')
     return redirect('/utilisateurs')
 
-@OnlySuperUser
 @login_required
 def EditeUser(request,pk):
     try:
@@ -171,10 +171,12 @@ def AjoutUtilisateurs(request):
     context = {'form':form}       
     return render(request,'ajoutUtilisateurs.html',context)
 
-
 # employee
 @login_required
 def EmployeeView(request):
+    employees = Employee.objects.all()
+    for employee in employees : 
+        checkPromos(request,employee.id)
     search_post = request.GET.get('search') 
     if search_post:
         by_name = Employee.objects.filter(Q(nom__icontains=search_post),Xfonctionnair=False)
@@ -187,6 +189,11 @@ def EmployeeView(request):
         except ObjectDoesNotExist:
             messages.add_message(request, messages.WARNING, 'Operation indesirable.') 
             return redirect('/')
+    current = datetime.now()
+    currentYear = current.year
+    currentMonth = current.month
+    currentDay = current.day
+    end = datetime(currentYear,currentMonth,currentDay)
     num = 5
     paginator = Paginator(employees,num)
     page_number = request.GET.get('page')
@@ -194,6 +201,49 @@ def EmployeeView(request):
         page_number = 1
     page_obj = paginator.get_page(page_number)
     is_paginated = (len(page_obj)==num)
+    for employee in page_obj : 
+        if employee.cheked :
+            if employee.date_effet != None :
+                d2 = employee.date_effet
+                ppp = d2.strftime("%d/%m/%Y")
+                l = ppp.split('/')
+                start = datetime(
+                    int(l[2]),
+                    int(l[1]),
+                    int(l[0]),
+                )
+                diff = relativedelta.relativedelta(end,start)
+                if diff.years >= 2 :
+                    if (diff.years == 2) and (diff.months >= 6) :
+                        employee.is_greater_than_2 = True
+                    elif diff.years > 2 :
+                        employee.is_greater_than_2 = True
+                    employee.is_greater_than_10 =False
+                
+                if diff.years >= 10 : 
+                    employee.is_greater_than_10 =True
+                    employee.is_greater_than_2 = False
+
+                if diff.years <= 2 :
+                    employee.is_greater_than_2 = False
+                    employee.is_greater_than_10 =False 
+
+                employee.save()
+                if employee.is_greater_than_2 and employee.decision == 'C': 
+                    employee.color = "#FFA500"
+                elif  employee.is_greater_than_2 and employee.decision == 'A':
+                    employee.color = "#008000"
+                elif employee.is_greater_than_10 : 
+                    employee.color = "#FF0000"
+                else : 
+                    employee.color = "#FFF"
+                employee.save()
+                print(diff.years , ' years, ', diff.months, ' months and ', diff.days, ' days')
+        else : 
+            print('no')
+            print(employee.cheked)
+            employee.color = "#FFF"
+            employee.save()
     fonctionnaire = False
     fonctionnaireJs = 1
     context = {'employees':page_obj,'page_number':page_number,'is_paginated':is_paginated,'fonctionnaire':fonctionnaire,'fonctionnaireJs':fonctionnaireJs}
@@ -245,6 +295,7 @@ def ajoutatsView(request):
             numss = request.POST['numss']
         ) 
         paie = Paie.objects.create(employee=employee) 
+        conge = Conge.objects.create(employee=employee)
         form = ATSFomrs(request.POST,request.FILES,instance=employee)
         if form.is_valid():
             form.save()
@@ -349,8 +400,6 @@ def AjoutPaie(request,pk):
         paie.save()
         messages.add_message(request, messages.SUCCESS, 'Operation validé.') 
         return redirect('/ats')
-    else : 
-        messages.add_message(request, messages.WARNING, 'Operation non validé') 
     context = {'paie':paie}
     return render(request,'paie.html',context)
 
@@ -579,3 +628,75 @@ def CertficatTravail(request,pk):
         response['Content-Disposition'] = content
         return response
     return HttpResponse("Not found")
+
+def Echelon(request,pk):
+    employee = Employee.objects.get(pk=pk)
+    paies = Paie.objects.filter(employee=employee).order_by('-created_at')
+    paie = paies.first()
+    if request.method == 'POST':
+        if request.POST['flexRadioDefault'] == 'True' :
+            employee.cheked = True
+            employee.date_effet = request.POST['date_effet']
+            employee.decision = request.POST['dicision']
+        else : 
+            employee.cheked = False
+        employee.save()
+        return redirect('/ats')
+    dure = ''
+    if employee.cheked :
+        chek = 0
+        if employee.is_greater_than_2 : 
+            dure = 'plus que 2 ans et demi'
+        
+        if employee.is_greater_than_10 : 
+            dure = 'plus que 10 ans'
+        
+        else : 
+            dure = 'moins que 2 ans et demi'
+    else : 
+        chek = 1
+    context = {"employee":employee,'paie':paie , 'dure':dure,'chek':chek}
+    return render(request,'echelon.html',context)
+
+def promosView(request,pk):
+    employee = Employee.objects.get(pk=pk)
+    paies = Paie.objects.filter(employee=employee).order_by('-created_at')
+    paie = paies.first()
+    if employee.checked :
+        chek = 0
+    else :
+        chek = 1
+    if request.method == 'POST':
+        if request.POST['flexRadioDefault'] == 'True' :
+            employee.checked = True
+            employee.date = request.POST['date']
+            employee.alerte = request.POST['alert']
+        else :
+            employee.checked = False
+            employee.alerte = 0
+        employee.save()
+        return redirect('/ats')
+    context = {'employee':employee,"paie":paie,'chek':chek}
+    return render(request,'promos.html',context)
+
+def checkPromos(request,pk):
+    employee = Employee.objects.get(pk=pk)
+    if employee.checked :
+        if employee.date != None :
+            current = datetime.now()
+            currentYear = current.year
+            currentMonth = current.month
+            currentDay = current.day
+            end = datetime(currentYear,currentMonth,currentDay)
+            d2 = employee.date
+            ppp = d2.strftime("%d/%m/%Y")
+            l = ppp.split('/')
+            start = datetime(
+                int(l[2]),
+                int(l[1]),
+                int(l[0]),
+            )
+            diff2 = relativedelta.relativedelta(end,start)
+            if diff2.years >= int(employee.alerte) :
+                messages.add_message(request, messages.WARNING, f"{employee.nom} {employee.prenom} dure d'anciante dans le grade est {employee.get_alerte_display()} .")
+    return False

@@ -1,0 +1,187 @@
+{% extends 'main.html' %} {% block body %}
+<div class="container ajout" style="height: auto">
+  <form
+    enctype="multipart/form-data"
+    action="{% url 'echelon' employee.id %}"
+    method="POST"
+  >
+    {% csrf_token %}
+    <div class="banner">
+      <h1>Formulaire d'echelon</h1>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="form-check">
+          {% if employee.cheked %}
+          <input
+            class="form-check-input show"
+            type="radio"
+            name="flexRadioDefault"
+            id="flexRadioDefault1"
+            value="True"
+            checked
+          />
+          {% else %}
+          <input
+            class="form-check-input show"
+            type="radio"
+            name="flexRadioDefault"
+            id="flexRadioDefault1"
+            value="True"
+          />
+          {% endif %}
+          <label class="form-check-label" for="flexRadioDefault1">
+            Activer
+          </label>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="form-check">
+          {% if not employee.cheked %}
+          <input
+            class="form-check-input hide22"
+            type="radio"
+            name="flexRadioDefault"
+            id="flexRadioDefault2"
+            value="0"
+            checked
+          />
+          {% else %}
+          <input
+            class="form-check-input hide22"
+            type="radio"
+            name="flexRadioDefault"
+            id="flexRadioDefault2"
+            value="0"
+          />
+          {% endif %}
+          <label class="form-check-label" for="flexRadioDefault2">
+            Desactiver
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- first -->
+    <div class="row oo1">
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          value="{{employee.nom}}"
+          name="nom"
+          required
+        />
+      </div>
+      <div class="col">
+        <input
+          type="text"
+          class="form-control"
+          value="{{employee.prenom}}"
+          name="prenom"
+          required
+        />
+      </div>
+    </div>
+
+    <div class="row oo1">
+      <div class="col">
+        <label class="form-label">Indice d'echelon</label>
+        <input
+          type="text"
+          class="form-control"
+          value="{{paie.echelon}}"
+          name="adresse"
+        />
+      </div>
+
+      <div class="col">
+        <label class="form-label">Date d'effet</label>
+        <input type="date" class="form-control" name="date_effet" id="date" value={{employee.date_effet | date:"Y-m-d"}}   />
+      </div>
+    </div>
+    <!--second-->
+    <div class="row oo1">
+      <div class="col">
+        <label class="form-label">Duré</label>
+        <input
+          type="text"
+          class="form-control"
+          value="{{dure}}"
+          name="dure"
+          id="dure"
+        />
+      </div>
+      <div class="col">
+        <label class="form-label">Dicision</label>
+        <select class="form-select" name="dicision">
+          <option selected>Dicision</option>
+          <option {% if employee.decision == 'C' %}selected{% endif %} value="C">Commision</option>
+          <option {% if employee.decision == 'A' %}selected{% endif %} value="A">Automatique</option>
+        </select>
+      </div>
+    </div>
+    <!--third-->
+    <!--valide-->
+    <div
+      class="row"
+      style="display: flex; justify-content: center; aligntu-items: center"
+    >
+      <a
+        style="width: auto"
+        href="{% url 'ats' %}"
+        class="btn btn-danger mb-3 mx-2"
+        >Annuler</a
+      >
+      <button
+        style="width: auto"
+        type="submit"
+        class="btn btn-primary mb-3 mx-2"
+      >
+        Valider
+      </button>
+    </div>
+  </form>
+</div>
+{% endblock %} {% block script %}
+<script>
+  document.querySelector("#date").onchange = () => {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    var yyyy = today.getFullYear();
+
+    today = mm + "," + dd + "," + yyyy;
+    var date = document.querySelector("#date").value;
+    var a = moment(today);
+    var b = moment(date);
+    a.diff(b, "years", true); // 1.75
+    var uu = a.diff(b, "years", true);
+    document.querySelector("#dure").value = "moins que 2 ans et demi";
+    if (uu >= 2.5) {
+      document.querySelector("#dure").value = "plus que 2 ans et demi";
+    }
+    if (uu > 10) {
+      document.querySelector("#dure").value = "plus que 10 ans";
+    }
+  };
+  document.querySelector('.show').onclick = () =>{
+    document.querySelectorAll('.oo1').forEach((div)=>{
+      div.style.display = 'flex'
+    })
+  }
+  if({{chek}}){
+    document.querySelectorAll('.oo1').forEach((div)=>{
+      div.style.display = 'none'
+    })
+  }
+
+  document.querySelector('.hide22').onclick = () =>{
+     document.querySelectorAll('.oo1').forEach((div)=>{
+      div.style.display = 'none'
+    })
+  }
+</script>
+{% endblock script %}

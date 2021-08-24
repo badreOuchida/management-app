@@ -45,6 +45,7 @@
       <tbody>
         {% for employee in employees %}
         <tr
+          style="background-color:{{employee.color}}"
           class="tr"
           data-nom="{{employee.nom}}"
           data-prenom="{{employee.prenom}}"
@@ -321,7 +322,9 @@
         document.querySelector(".prime").href = "/prime/" + row.dataset.id;
         document.querySelector(".fichePaie").href =
           "/pdf/paie/" + row.dataset.id;
-        document.querySelector('.fichePersonnel').href = "pdf/fichepersonnel/"+row.dataset.id
+        document.querySelector('.fichePersonnel').href = "pdf/fichepersonnel/"+row.dataset.id;
+        document.querySelector('.echelon').href = "echelon/"+row.dataset.id;
+        document.querySelector('.promos').href = "promos/"+row.dataset.id;
       }else{
         document.querySelector('.certificatTravail').href = "pdf/certificatTravail/"+row.dataset.id
       }
