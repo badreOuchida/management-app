@@ -420,7 +420,7 @@ def congeView(request,pk):
         conge.retour = request.POST['retour']
         conge.commentaire = request.POST['commentaire']
         conge.save()
-        messages.add_message(request, messages.SUCCESS, 'Congé ajouté.')
+        messages.add_message(request, messages.SUCCESS, "Congé ajouté .")
         return redirect('/ats')
     context = {"employee":employee}
     return render(request,'congeform.html',context)

@@ -82,6 +82,13 @@ WSGI_APPLICATION = 'mA.wsgi.application'
 #postgres://enjyrmjkfunoqb:0236a80d719cb7639c1be5d651396d1b1c834e0673d5d501f0306bc95b136065@ec2-54-147-93-73.compute-1.amazonaws.com:5432/d9ml9hbj6d7slh
 DATABASES = {
    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+'''
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'd9ml9hbj6d7slh',
         'HOST': "ec2-54-147-93-73.compute-1.amazonaws.com",
@@ -90,7 +97,7 @@ DATABASES = {
         'PASSWORD':'0236a80d719cb7639c1be5d651396d1b1c834e0673d5d501f0306bc95b136065'
 
     }
-}
+'''
 
 
 # Password validation
